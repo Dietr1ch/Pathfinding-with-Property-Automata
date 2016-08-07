@@ -1,0 +1,110 @@
+#+TITLE: Pathfinding with Property Automata Path Restrictions
+#+AUTHOR: Dietrich Daroch
+#+CREATOR: Dietrich Daroch
+#+EMAIL: dietr1ch@acm.org
+
+# Setup
+# -----
+#+LANGUAGE: en
+
+#+LaTeX_HEADER: \usepackage{tikz}
+
+#+LaTeX_HEADER: \input{aliases.tex}
+
+#+SEQ_TODO: TODO | REVIEW DONE
+#+SEQ_TODO: FIX  | REVIEW_FIX FIX_DONE
+
+#+OPTIONS: toc:nil skip:nil ^:nil   author:nil timestamp:nil
+#+STARTUP: showall
+
+# Annoyances
+# ----------
+# „Quotes“
+
+
+# Abstract
+# --------
+#+BEGIN_LaTeX
+\begin{abstract}
+This work is good.
+\end{abstract}
+#+END_LaTeX
+
+
+# Tables
+# ------
+#+BEGIN_LaTeX
+%\tableofcontents{}
+#+END_LaTeX
+
+
+
+* TODO Introduction.
+Long ago efforts to understand text were made, but today not all information lies on plain text, or tree hierarchies. Techniques and machinery that appeared then are not directly useful when working with Graphs.
+
+* Preliminaries.
+** Graphs.
+Intuitively, a Graph is a collection of objects with information about how those objects are related.
+
+*** REVIEW Definition                                                 :def:
+CLOSED: [2016-08-06 Sat 18:43]
+Given a set $V$, a /Graph/ is a pair $(V, E)$, where $E \subset V^2$. We call $V$ and $E$ the /vertex set/ and the /edge set/ respectively.
+The relation given by $E$ can be detailed by using a set of labels $\Sigma$ and a function $l\colon E \to 2^\Sigma$ that assigns possibly multiple labels to each edge.
+
+\paragraph{}
+With this in mind, we define a /Labeled Graph/ as the tuple $(V, E, \Sigma, l)$. We say that a Labeled Graph is /self-labeled/ when $\Sigma=V$.
+
+*** TODO Examples                                                 :appendix:
+**** Family tree
+**** Road (with Distances)
+**** Game search tree (with actions)
+** Automata.
+An /Automaton/ is a Labeled Graph extended to describe patterns of labels. The definition by [HopcroftUlhman] differs from this one, but the equivalence is clear and showed on the appendix.
+
+*** TODO Definition                                                 :def:
+Given a Labeled Graph $(S, E, \Sigma, l)$ using a set $S$ of /States/.
+** Search Problem.
+* Property Automata.
+On this chapter we will develop a finite-state machine to accept or reject a labeled path.
+** Definition.
+*** TODO Filters
+*** TODO Automata
+** Induced Heuristic.
+*** TODO Computing the Heuristic
+*** TODO Consistency.
+* Search with Property Automata.
+** Definition.
+*** TODO Search algorithm.
+*** TODO Definition as a Distributed Algorithm.
+  - Advantages over single threaded formulation.
+** TODO Multi-point search.
+  - Filter invertibility.
+** Remarks
+Note that the Search with Property Automata can simulate old Automata if the database $(\Set{s_0}, \Set{(s_0, s_0), \Sigma, l}$ is considered, where $l(s_0) = 2^\Sigma$.
+Not only it happens that the paths (words) accepted are the same, but also that given a Query (regular expression), paths (words) can be gathered exhaustively in an ordered way.
+* Searching on the Semantic Web.
+** TODO The Semantic Web Graph.
+** TODO Limitations of the Web.
+** TODO Search Problem.
+** TODO Evaluation.
+* Conclusions.
+* TODO Future Work.
+** Automata
+*** Define a Query language.
+Currently the definition relies on the existence of adequate filter functions
+** Search
+  - Subqueries as a service. (Adjusting the work made by the servers).
+  - Picking invertable ends
+** Semantic Web
+  - Rewriting SPARQL to Property Automata.
+  - Discovery Protocol (like Triple Pattern Fragments)
+  - Using statistics to focus search
+* Bibliography
+#+BEGIN_LaTeX
+\thebibliography
+#+END_LaTeX
+.
+
+* Appendix
+** TODO Classic Automata and our definition
+The classic automata definition is by a tuple $(S, s_0, \Sigma, \delta, F)$ where $S$ is the set of /States/ and $\delta\colon S \cross \to \Sigma \to S$.
