@@ -1,7 +1,7 @@
 # #+TITLE: Don't use org-mode title, it inserts unwanted \maketitle
 #+AUTHOR: Dietrich Arnaldo Daroch González
 #+DATE: December, 2016
-#+LANGUAGE: es
+#+LANGUAGE: en
 
 
 # Setup
@@ -12,7 +12,7 @@
 
 # Packages
 #+LaTeX_HEADER: \input{setup.tex}  % pucthesis setup (should be part of the LaTeX class!
-#+LaTeX_HEADER: \usepackage[english,spanish]{babel}
+#+LaTeX_HEADER: \usepackage[spanish,english]{babel}
 
 # microtype (xelatex)
 #+LaTeX_HEADER: \usepackage[final,factor=1100,stretch=10,shrink=10]{microtype}
@@ -89,7 +89,6 @@ To everyone
 \selectlanguage{english}
 \chapter*{Abstract}
 \label{ch:abstract}
-\selectlanguage{english}
 %\begin{abstract}
 This work is good.
 %\end{abstract}
@@ -109,13 +108,15 @@ This work is good.
 %\begin{abstract}
 Este trabajo es muy bueno.
 %\end{abstract}
-\selectlanguage{english}
 
 % Keywords
 \vfill
 {\bf Palabras Claves:} \parbox[t]{.75\textwidth}{
 	SPARQL, RDF, Web sem\'antica, optimizaci\'on, reescritura, modelos de bases de datos
 }
+
+
+\selectlanguage{english}
 #+end_export
 
 
