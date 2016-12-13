@@ -1,6 +1,8 @@
 # #+TITLE: Don't use org-mode title, it inserts unwanted \maketitle
 #+AUTHOR: Dietrich Arnaldo Daroch González
 #+DATE: December, 2016
+#+LANGUAGE: es
+
 
 # Setup
 # -----
@@ -8,11 +10,14 @@
 #+LaTeX_CLASS: puc
 #+LaTeX_CLASS_OPTIONS: [12pt,reqno,oneside]
 
-# #+LANGUAGE: en
+# Packages
+#+LaTeX_HEADER: \input{setup.tex}  % pucthesis setup (should be part of the LaTeX class!
 #+LaTeX_HEADER: \usepackage[english,spanish]{babel}
 
-#+LaTeX_HEADER: \usepackage{tikz}
-#+LaTeX_HEADER: \input{setup.tex}
+# microtype (xelatex)
+#+LaTeX_HEADER: \usepackage[final,factor=1100,stretch=10,shrink=10]{microtype}
+# #+LaTeX_HEADER: \usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+
 
 #+SEQ_TODO: TODO | REVIEW DONE
 
@@ -67,7 +72,6 @@ To everyone
 #+begin_export LaTeX
 \selectlanguage{english}
 \chapter*{Acknowledgements}
-Thanks
 
 \cleardoublepage
 #+end_export
@@ -91,7 +95,7 @@ This work is good.
 %\end{abstract}
 
 % Keywords
-%~\vfill
+\vfill
 {\bf Keywords:} \parbox[t]{.75\textwidth}{
 	SPARQL, RDF, Semantic Web, optimization, rewriting, database models
 }
@@ -108,7 +112,7 @@ Este trabajo es muy bueno.
 \selectlanguage{english}
 
 % Keywords
-%~\vfill
+\vfill
 {\bf Palabras Claves:} \parbox[t]{.75\textwidth}{
 	SPARQL, RDF, Web sem\'antica, optimizaci\'on, reescritura, modelos de bases de datos
 }
@@ -124,7 +128,19 @@ Este trabajo es muy bueno.
 
 
 * TODO Introduction
-Long ago efforts to understand text were made, but today not all information lies on plain text, or tree hierarchies. Techniques and machinery that appeared then are not directly useful when working with Graphs.
+People indirectly uses databases many times a day without noticing it.
+Databases are key to manage information in many systems, which store information
+ranging from instant messaging systems, email and documents to media and banking.
+Today, that information is likely to be stored in tables obeying schemas
+carefully tailored for each application.
+This makes linking data across multiple applications hard, if not impossible.
+Linking data is not only interesting because it's hard to do, but mostly because
+it offers new data to enhance applications.\cite{BaierDRV16}.
+
+Today databases are used internally by many applications and systems
+Long ago efforts to understand text were made, but today not all information
+lies on plain text, or tree hierarchies. Techniques and machinery that appeared
+then are not directly useful when working with Graphs.
 
 * Preliminaries
 ** Graphs.
@@ -185,17 +201,18 @@ Currently the definition relies on the existence of adequate filter functions
   - Rewriting SPARQL to Property Automata.
   - Discovery Protocol (like Triple Pattern Fragments)
   - Using statistics to focus search
-* Bibliography                                                      :ignore:
+* References                                                        :ignore:
 #+begin_export LaTeX
+\cleardoublepage
+\phantomsection \label{references}
 \bibliographystyle{apacite}
-
-
-{\setlength{\baselineskip}{0.8\baselineskip}
-\bibliography{biblio}
-\par}
-
+\renewcommand{\bibname}{REFERENCES}
+\bibliography{thesis}
 #+end_export
 
-* Appendix
+* Appendix                                                          :ignore:
+#+begin_export LaTeX
+\appendix % It is like a chapter, so each appendix (A, B, C...) must to be considered as a section
+#+end_export
 ** TODO Classic Automata and our definition
-The classic automata definition is by a tuple $(S, s_0, \Sigma, \delta, F)$ where $S$ is the set of /States/ and $\delta\colon S \cross \to \Sigma \to S$.
+The classic automata definition is by a tuple $(S, s_0, \Sigma, \delta, F)$ where $S$ is the set of /States/ and $\delta \colon S \times \Sigma \to S$.

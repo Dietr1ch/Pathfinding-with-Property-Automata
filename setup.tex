@@ -1,12 +1,46 @@
-\usepackage{mathtools}
-\newcommand{\on}[1]{\operatorname{#1}}
-\DeclarePairedDelimiter\set{\{}{\}}
-\DeclarePairedDelimiter\abs{|}{|}
-\DeclarePairedDelimiter\sizeof{\|}{\|}
-\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
-\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\usepackage{ucs}
+\usepackage{auto-pst-pdf}
 
-%--------- NEW ENVIRONMENTS ---------
+% Template setup
+% ==============
+
+% Floats
+\usepackage{graphicx}
+\usepackage{float}
+\floatstyle{boxed}
+\restylefloat{figure}
+\usepackage{subfigure}
+\usepackage{color}
+
+% Math packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+% Closest font to Times New Roman
+\usepackage{times}
+
+% To make pretty tables
+\usepackage{booktabs}
+\usepackage{multirow}
+
+% To avoid underfull errors in the bibliography
+\usepackage{etoolbox}
+\apptocmd{\sloppy}{\hbadness 10000\relax}{}{}
+
+% To make cites and references
+%\usepackage[hidelinks,pdfusetitle,pdfdisplaydoctitle]{hyperref}
+\hypersetup{
+    hidelinks=true,
+    pdfusetitle=true,
+    pdfdisplaydoctitle=true
+}
+
+\usepackage[notocbib]{apacite}
+\usepackage{doi}
+\renewcommand{\doitext}{}
+
+% New environments
 \newtheorem{definition}{\bf Definition}[chapter]
 \newtheorem{property}{Property}[chapter]
 \newtheorem{claim}{Claim}[chapter]
@@ -17,3 +51,57 @@
 \newtheorem{pf}{Proof}[chapter]
 \newtheorem{example}{\bf Example}[chapter]
 \newtheorem{remark}{Remark}[chapter]
+
+
+
+% Additional setup
+% ================
+\usepackage[left=4cm, top=3cm, bottom=4cm, right=2.5cm]{geometry}
+
+\usepackage{mathtools}
+\newcommand{\on}[1]{\operatorname{#1}}
+\DeclarePairedDelimiter\set{\{}{\}}
+\DeclarePairedDelimiter\abs{|}{|}
+\DeclarePairedDelimiter\sizeof{\|}{\|}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\usepackage{numprint}
+\npthousandsep{,}
+
+%%  % Times fonts, as required by the OGRS
+%%  \usepackage{mathptmx}
+
+
+%%  \usepackage{subfig}
+%%  \usepackage{fancybox}
+%%  \usepackage[T1]{fontenc}
+%%
+%%
+%%  \usepackage{pdfpages}
+%%
+%%  \usepackage{booktabs}
+%%
+%%  \usepackage{times}
+%%  \usepackage{graphicx}
+%%  \usepackage{epic}
+%%  \usepackage{eepic}
+%%  \usepackage{url}
+%%  \usepackage{algorithm2e}
+%%  \usepackage{rotfloat}
+%%  \usepackage{xspace}
+%%  \usepackage{amsmath}
+%%  \usepackage{amssymb}
+%%  \usepackage{use stmaryrd}
+%%  \usepackage{cases}
+%%
+%%  % Tikz
+%%  \usepackage{tikz}
+%%   \usetikzlibrary{trees}
+%%   \usetikzlibrary{shapes}
+%%   \usetikzlibrary{shapes.geometric,shapes}
+%%   \usetikzlibrary{positioning}
+%%   \usetikzlibrary{calc}
+%%   \usetikzlibrary{arrows}
+%%   \usetikzlibrary{shadows}
+%%  \usepackage{tikz-qtree,tikz-qtree-compat}
