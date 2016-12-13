@@ -1,48 +1,132 @@
-#+TITLE: Pathfinding with Property Automata Path Restrictions
-#+AUTHOR: Dietrich Daroch
-#+CREATOR: Dietrich Daroch
-#+EMAIL: dietr1ch@acm.org
+# #+TITLE: Don't use org-mode title, it inserts unwanted \maketitle
+#+AUTHOR: Dietrich Arnaldo Daroch González
+#+DATE: December, 2016
 
 # Setup
 # -----
-#+LANGUAGE: en
+# Using LaTeX_CLASS requires additional setup!
+#+LaTeX_CLASS: puc
+#+LaTeX_CLASS_OPTIONS: [12pt,reqno,oneside]
+
+# #+LANGUAGE: en
+#+LaTeX_HEADER: \usepackage[english,spanish]{babel}
 
 #+LaTeX_HEADER: \usepackage{tikz}
-
-#+LaTeX_HEADER: \input{aliases.tex}
+#+LaTeX_HEADER: \input{setup.tex}
 
 #+SEQ_TODO: TODO | REVIEW DONE
-#+SEQ_TODO: FIX  | REVIEW_FIX FIX_DONE
 
-#+OPTIONS: toc:nil skip:nil ^:nil   author:nil timestamp:nil
-#+STARTUP: showall
+#+OPTIONS: toc:nil
+#+OPTIONS: tasks:t
+#+OPTIONS: tags:nil
+#+OPTIONS: d:nil
+#+OPTIONS: skip:nil ^:nil timestamp:nil
+#+STARTUP: overview
 
 # Annoyances
 # ----------
 # „Quotes“
 
+* Header                                                            :ignore:
+#+begin_export LaTeX
+\title[Evaluating Navigational RDF Queries]{Evaluating Navigational RDF Queries
+	over the Web}
 
-# Abstract
-# --------
-#+BEGIN_LaTeX
-\begin{abstract}
+\address{Escuela de Ingenier\'ia\\
+				 Pontificia Universidad Cat\'olica de Chile\\
+				 Vicu\~na Mackenna 4860\\
+				 Santiago, Chile\\
+				 {\it Tel.\/} : 56 (2) 354-2000}
+\email{Dietrich.Daroch@gmail.com}
+%
+\facultyto    {the School of Engineering}
+\department   {}
+\faculty      {Faculty of Engineering}
+\degree       {Master of Science in Engineering}
+\advisor      {Jorge Baier A.}
+\committeememberA {Juan L. Reutter D.}
+%\committeememberB {Committee Member B (Optional)}
+\guestmemberA {Jorge P\'erez R.}
+%\guestmemberB {Guest Committee Member B (Optional)}
+\ogrsmember   {Juan Siding B.}  % TODO: change
+\subject      {Engineering}
+\date         {Diciembre 2016}
+\copyrightname{Dietrich Daroch}
+\copyrightyear{MMXVI}
+
+\dedication {
+To everyone
+}
+
+\NoChapterPageNumber
+\pagenumbering{roman}
+\maketitle
+#+end_export
+
+* Acknowledgements                                                  :ignore:
+#+begin_export LaTeX
+\selectlanguage{english}
+\chapter*{Acknowledgements}
+Thanks
+
+\cleardoublepage
+#+end_export
+
+* Tables                                                            :ignore:
+#+begin_export LaTeX
+\tableofcontents
+\listoftables
+\listoffigures
+\cleardoublepage % In double-sided printing style makes the next page
+#+end_export
+
+* Abstract                                                          :ignore:
+#+begin_export LaTeX
+\selectlanguage{english}
+\chapter*{Abstract}
+\label{ch:abstract}
+\selectlanguage{english}
+%\begin{abstract}
 This work is good.
-\end{abstract}
-#+END_LaTeX
+%\end{abstract}
+
+% Keywords
+%~\vfill
+{\bf Keywords:} \parbox[t]{.75\textwidth}{
+	SPARQL, RDF, Semantic Web, optimization, rewriting, database models
+}
+#+end_export
+
+* Resumen                                                           :ignore:
+#+begin_export LaTeX
+\chapter*{Resumen}
+\label{ch:resumen}
+\selectlanguage{spanish}
+%\begin{abstract}
+Este trabajo es muy bueno.
+%\end{abstract}
+\selectlanguage{english}
+
+% Keywords
+%~\vfill
+{\bf Palabras Claves:} \parbox[t]{.75\textwidth}{
+	SPARQL, RDF, Web sem\'antica, optimizaci\'on, reescritura, modelos de bases de datos
+}
+#+end_export
 
 
-# Tables
-# ------
-#+BEGIN_LaTeX
-%\tableofcontents{}
-#+END_LaTeX
+* Setup                                                             :ignore:
+#+begin_export LaTeX
+\cleardoublepage
+\pagenumbering{arabic}
+#+end_export
 
 
 
-* TODO Introduction.
+* TODO Introduction
 Long ago efforts to understand text were made, but today not all information lies on plain text, or tree hierarchies. Techniques and machinery that appeared then are not directly useful when working with Graphs.
 
-* Preliminaries.
+* Preliminaries
 ** Graphs.
 Intuitively, a Graph is a collection of objects with information about how those objects are related.
 
@@ -51,20 +135,22 @@ CLOSED: [2016-08-06 Sat 18:43]
 Given a set $V$, a /Graph/ is a pair $(V, E)$, where $E \subset V^2$. We call $V$ and $E$ the /vertex set/ and the /edge set/ respectively.
 The relation given by $E$ can be detailed by using a set of labels $\Sigma$ and a function $l\colon E \to 2^\Sigma$ that assigns possibly multiple labels to each edge.
 
-\paragraph{}
 With this in mind, we define a /Labeled Graph/ as the tuple $(V, E, \Sigma, l)$. We say that a Labeled Graph is /self-labeled/ when $\Sigma=V$.
 
 *** TODO Examples                                                 :appendix:
-**** Family tree
-**** Road (with Distances)
-**** Game search tree (with actions)
+	- Family tree
+	- Road (with Distances)
+	- Game search tree (with actions)
 ** Automata.
 An /Automaton/ is a Labeled Graph extended to describe patterns of labels. The definition by [HopcroftUlhman] differs from this one, but the equivalence is clear and showed on the appendix.
 
 *** TODO Definition                                                 :def:
 Given a Labeled Graph $(S, E, \Sigma, l)$ using a set $S$ of /States/.
+
 ** Search Problem.
-* Property Automata.
+Lorem ipsum.
+
+* Property Automata
 On this chapter we will develop a finite-state machine to accept or reject a labeled path.
 ** Definition.
 *** TODO Filters
@@ -72,7 +158,7 @@ On this chapter we will develop a finite-state machine to accept or reject a lab
 ** Induced Heuristic.
 *** TODO Computing the Heuristic
 *** TODO Consistency.
-* Search with Property Automata.
+* Search with Property Automata
 ** Definition.
 *** TODO Search algorithm.
 *** TODO Definition as a Distributed Algorithm.
@@ -80,15 +166,15 @@ On this chapter we will develop a finite-state machine to accept or reject a lab
 ** TODO Multi-point search.
   - Filter invertibility.
 ** Remarks
-Note that the Search with Property Automata can simulate old Automata if the database $(\Set{s_0}, \Set{(s_0, s_0), \Sigma, l}$ is considered, where $l(s_0) = 2^\Sigma$.
+Note that the Search with Property Automata can simulate old Automata if the database $(\set{s_0}, \set{(s_0, s_0), \Sigma, l}$ is considered, where $l(s_0) = 2^\Sigma$.
 Not only it happens that the paths (words) accepted are the same, but also that given a Query (regular expression), paths (words) can be gathered exhaustively in an ordered way.
-* Searching on the Semantic Web.
+* Searching on the Semantic Web
 ** TODO The Semantic Web Graph.
 ** TODO Limitations of the Web.
 ** TODO Search Problem.
 ** TODO Evaluation.
-* Conclusions.
-* TODO Future Work.
+* Conclusions
+* TODO Future Work
 ** Automata
 *** Define a Query language.
 Currently the definition relies on the existence of adequate filter functions
@@ -99,11 +185,16 @@ Currently the definition relies on the existence of adequate filter functions
   - Rewriting SPARQL to Property Automata.
   - Discovery Protocol (like Triple Pattern Fragments)
   - Using statistics to focus search
-* Bibliography
-#+BEGIN_LaTeX
-\thebibliography
-#+END_LaTeX
-.
+* Bibliography                                                      :ignore:
+#+begin_export LaTeX
+\bibliographystyle{apacite}
+
+
+{\setlength{\baselineskip}{0.8\baselineskip}
+\bibliography{biblio}
+\par}
+
+#+end_export
 
 * Appendix
 ** TODO Classic Automata and our definition
