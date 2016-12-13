@@ -1,11 +1,12 @@
 * Thesis
 
-This is an `org-mode` project of my thesis. It relies on org-export to generate the document.
+This is an ~org-mode~ project of my thesis. It relies on org-export to generate the document.
 
 ** Setup
-This requires emacs and the org-mode packages as expected. Spacemacs is recommended (=
+This requires emacs and the org-mode packages as expected.
+Spacemacs is recommended (=
 
-The following should be in your `.emacs` or `.spacemacs`:
+The following should be in your ~.emacs~ or ~.spacemacs~:
 
 #+begin_src emacs-lisp
 	;; Use minted instead of plain verbatim
