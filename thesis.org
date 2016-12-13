@@ -199,9 +199,34 @@ Currently the definition relies on the existence of adequate filter functions
   - Subqueries as a service. (Adjusting the work made by the servers).
   - Picking invertable ends
 ** Semantic Web
-  - Rewriting SPARQL to Property Automata.
-  - Discovery Protocol (like Triple Pattern Fragments)
-  - Using statistics to focus search
+*** Rewriting SPARQL to Property Automata
+*** Discovery Protocol
+(like Triple Pattern Fragments)
+*** Statistics
+Collecting statistics about the data served is probably the best way to improve
+the layout and connectivity of the data served without requiring any supervision
+or expert knowledge.
+
+The /HTTP protocol/ provides the foundation for the Semantic Web, and it already
+carries useful metadata for servers as part of the standard \cite{httpHeaders}.
+For example, the /referer field/ tracks the IRI used to discover the IRI
+currently being dereferenced, so it can be used to let servers exchange and
+replicate triples to keep connectivity of reversed links. This replication
+*needs* feedback from the users, as a single server simply cannot hold all the
+triples mentioning any IRI, therefore, keeping only the top k-th most used
+triples becomes a good mechanism to hold important information under reasonable
+space constraints.
+
+Serving the most used outgoing IRIs first would enable clients to share hints on
+which are the most useful IRIs to explore, allowing clients to minimize the
+effort made to get the first answers.
+
+Those are only 2 examples of what can be achieved by using statistics, both by
+themselves are promising, so exploring what can be done with additional metadata
+is really interesting.
+*** Document semantics
+Documents currently give back triples that mention the IRI requested. This can be generalized to paths that start at the IRI, which would enable to reduce roundtrips if the paths are useful.
+
 * References                                                        :ignore:
 #+begin_export LaTeX
 \cleardoublepage
