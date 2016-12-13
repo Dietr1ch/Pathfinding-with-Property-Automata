@@ -89,30 +89,38 @@ To everyone
 \selectlanguage{english}
 \chapter*{Abstract}
 \label{ch:abstract}
-%\begin{abstract}
-This work is good.
-%\end{abstract}
+This works presents a novel reduction from \emph{Property Path Computation} to
+\emph{Heuristic Search}, which enables to solve queries in a more efficient way
+than the previously known reduction to \emph{Uninformed Search}.
+The new reduction enables to use years of reaserch on Heuristic Search made by
+the Artificial Intelligence community to solve \emph{Property Paths} over
+\emph{Linked Data} more efficiently.
+Besides the reduction, optimizations and implementation details are reviewed.
+
 
 % Keywords
 \vfill
 {\bf Keywords:} \parbox[t]{.75\textwidth}{
-	SPARQL, RDF, Semantic Web, optimization, rewriting, database models
+	RDF, Semantic Web, Property Paths, Graph Databases
 }
 #+end_export
 
-* Resumen                                                           :ignore:
 #+begin_export LaTeX
 \chapter*{Resumen}
 \label{ch:resumen}
 \selectlanguage{spanish}
-%\begin{abstract}
-Este trabajo es muy bueno.
-%\end{abstract}
+Este trabajo presenta una reducción nueva desde \emph{Property Path Computation} a
+\emph{Búsqueda Heurística}, la cuál permite resolver consultas de manera más
+eficiente que la anteriormente conocida reducción a \emph{Búsqueda Ciega}.
+Esta nueva reducción permite aprovechar años de investigación en Búsqueda por
+parte de la comunidad de Inteligencia Artificial para resolver consultas sobre
+\emph{Property Paths} en \emph{Linked Data} de forma más eficiente.
+Además de la reducción, se estudian optimizaciones y detalles de implementación.
 
 % Keywords
 \vfill
 {\bf Palabras Claves:} \parbox[t]{.75\textwidth}{
-	SPARQL, RDF, Web sem\'antica, optimizaci\'on, reescritura, modelos de bases de datos
+	RDF, Web Semántica, Property Paths, Bases de Datos de Grafos
 }
 
 
