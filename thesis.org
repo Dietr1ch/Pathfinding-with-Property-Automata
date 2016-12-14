@@ -137,43 +137,88 @@ Además de la reducción, se estudian optimizaciones y detalles de implementaci�
 
 
 * TODO Introduction
-People indirectly uses databases many times a day without noticing it.
-Databases are key to manage information in many systems, which store information
-ranging from instant messaging systems, email and documents to media and banking.
-Today, that information is likely to be stored in tables obeying schemas
-carefully tailored for each application.
-This makes linking data across multiple applications hard, if not impossible.
-Linking data is not only interesting because it's hard to do, but mostly because
-it offers new data to enhance applications.\cite{BaierDRV16}.
+** TODO Background
+ People indirectly uses databases many times a day without noticing it.
+ Databases are key to manage information in many systems, which store information
+ ranging from instant messaging systems, email and documents to media and banking.
+ Today, that information is likely to be stored in tables obeying schemas
+ carefully tailored for each application.
+ This makes linking data across multiple applications hard, if not impossible.
 
-Today databases are used internally by many applications and systems
-Long ago efforts to understand text were made, but today not all information
-lies on plain text, or tree hierarchies. Techniques and machinery that appeared
-then are not directly useful when working with Graphs.
+ To overcome this lack of
+
+ Linking data is not only interesting because it's hard to do, but mostly because
+ it offers new data to enhance applications.\cite{BaierDRV16}.
+
+ Today databases are used internally by many applications and systems
+
+ Long ago efforts to understand text were made, but today not all information
+ lies on plain text, or tree hierarchies. Techniques and machinery that appeared
+ then are not directly useful when working with Graphs.
+
+
+** TODO Contribution
+Essentially this works provides an algorithm to compute /Property Paths/ by
+navigating that it's more efficient than the previously existing ones.
+
+The algorithm is accompanied by proof of it's efficiency, as well as an
+experimental evaluation that provides explicit evidence along with   the
+contribution is
+
+
+** TODO Outline
+Section \ref{sec:Preliminaries} presents some background in Graphs and Automata,
+as well as a definitions for the Semantic Web Search Problems, including
+Heuristic Search.
+
 
 * Preliminaries
+#+begin_export latex
+\label{sec:Preliminaries}
+#+end_export
+
 ** Graphs.
 Intuitively, a Graph is a collection of objects with information about how those objects are related.
 
 *** REVIEW Definition                                                 :def:
 CLOSED: [2016-08-06 Sat 18:43]
-Given a set $V$, a /Graph/ is a pair $(V, E)$, where $E \subset V^2$. We call $V$ and $E$ the /vertex set/ and the /edge set/ respectively.
-The relation given by $E$ can be detailed by using a set of labels $\Sigma$ and a function $l\colon E \to 2^\Sigma$ that assigns possibly multiple labels to each edge.
+Given a set $V$, a /Graph/ is a pair /vertices/ and /edges/, $(V, E)$, where $E$
+is a collection of elements from $V^2$. $E$ is usually a set, but when it allows
+duplication, the /Graph/ is called a /Multi-Graph/ as multiple edges can join
+the same pair of vertices.
 
-With this in mind, we define a /Labeled Graph/ as the tuple $(V, E, \Sigma, l)$. We say that a Labeled Graph is /self-labeled/ when $\Sigma=V$.
+The relation given by $E$ can be further detailed by using a set of labels $\Sigma$ and
+a function $l\colon E \to \Sigma$ that assigns labels to each edge.
 
-*** TODO Examples                                                 :appendix:
-	- Family tree
-	- Road (with Distances)
-	- Game search tree (with actions)
+With this in mind, we define a /Labeled Graph/ as the tuple $(V, E, \Sigma, l)$.
+We say that a Labeled Graph is /self-labeled/ when $\Sigma=V$.
+
+It's easy to find examples that use graphs, for example consider $V$ as a set of
+people, and $E$ as arcs that depict relations between the people. To explain
+each relation on $E$, the label $\Sigma$ can contain, for example, /friends/,
+/best-friends/, /ex-girlfriend/ can be used.
+
 ** Automata.
-An /Automaton/ is a Labeled Graph extended to describe patterns of labels. The definition by [HopcroftUlhman] differs from this one, but the equivalence is clear and showed on the appendix.
+An /Automaton/ is a Labeled Graph extended to describe patterns of labels. The
+patterns describes are the labels of a path starting from a fixed vertex that
+end on selected vertices.
+Note that the classical definition by definition by \citeA{AutomataTheory} is
+more strict, as it implicitly imposes restrictions on the graph. The relation
+between both definitions is discussed on the appendix.
 
 *** TODO Definition                                                 :def:
-Given a Labeled Graph $(S, E, \Sigma, l)$ using a set $S$ of /States/.
+Given a Labeled Graph $(S, T, \Sigma, l)$, where $S$ is a set of /States/, and
+$T$ a collection /Transitions/, an /Automaton/, is the tuple $(S, T, \Sigma, l,
+s_0, F)$, where $s_0 \in S$ is the /starting state/, and $F \subset S$ is the
+set of /final states/.
+
+
+
+** Semantic Web
 
 ** Search Problem.
 Lorem ipsum.
+*** Heuristic Search
 
 * Property Automata
 On this chapter we will develop a finite-state machine to accept or reject a labeled path.
@@ -204,12 +249,59 @@ Not only it happens that the paths (words) accepted are the same, but also that 
 *** Define a Query language.
 Currently the definition relies on the existence of adequate filter functions
 ** Search
-  - Subqueries as a service. (Adjusting the work made by the servers).
-  - Picking invertable ends
+*** Multi point search
+Notice that starting point can be seen as search node that is /allowed/ by the the starting
+by only looking a
+
 ** Semantic Web
 *** Rewriting SPARQL to Property Automata
+SPARQL endpoints can benefit from our approach to answer /Property Path/ queries
+in a faster and more reliable way, as currently well known engines either don't
+support /Property Paths/ or perform badly while computing answers \cite{BaierDRV16}.
+
+The most outstanding property of our approach, is that incremental answering
+allows to compute queries using ~limit~ in without computing all the answers as
+currently some /Property Path/ capable endpoints do.
+
 *** Discovery Protocol
-(like Triple Pattern Fragments)
+On our experiments was necessary to allow querying the SPARQL endpoints to look
+for /backward triples/, as documents on some servers only were complete with
+respect to triples starting on the queried IRI.
+
+Our approach to avoid navigating only from incomplete documents relied on a
+manual matching between IRI prefixes and SPARQL endpoint locations. This manual
+matching forbids the use of this trick to explore new servers.
+
+The technique could be used reliably if a standardized way to locate SPARQL
+endpoints was available.
+
+*** Local path queries
+Using SPARQL endpoints not only allows to retrieve more reliable data, but it
+also could enable faster navigation if more expressive queries are allowed, as
+simply querying for longer paths would save some roundtrips to the server,
+reducing the network load against the server in exchange for some extra server
+CPU time that depends on a length parameter.
+
+This approach requires only a subset of SPARQL capabilities, and could be
+handled with less powerful servers that can also be allowed to impose a limit on
+the length. For this to reduce network traffic, only paths local to the server
+can be answered, but partial paths are also useful to the clients.
+
+This approach subsumes the proposal from Triple Pattern Fragments, as they only
+consider paths of length 1. Note that servers could also run A* in order to
+search their local database while answering, this uniformity suggests that
+clients can easily become servers, serving their data and the data gathered
+while navigating.
+
+*** Extending documents information
+Documents currently give back triples that mention the IRI requested. Following
+the goal from local path queries, this can be generalized to paths that start at
+the IRI, which would enable to reduce roundtrips if the paths are useful.
+
+This would be a simple way to gain the benefits from Local path queries, but
+requires to fix the document to hold more paths, which can affect performance
+when the additional information is not useful for the client.
+
 *** Statistics
 Collecting statistics about the data served is probably the best way to improve
 the layout and connectivity of the data served without requiring any supervision
@@ -232,8 +324,7 @@ effort made to get the first answers.
 Those are only 2 examples of what can be achieved by using statistics, both by
 themselves are promising, so exploring what can be done with additional metadata
 is really interesting.
-*** Document semantics
-Documents currently give back triples that mention the IRI requested. This can be generalized to paths that start at the IRI, which would enable to reduce roundtrips if the paths are useful.
+
 
 * References                                                        :ignore:
 #+begin_export LaTeX
@@ -248,5 +339,22 @@ Documents currently give back triples that mention the IRI requested. This can b
 #+begin_export LaTeX
 \appendix % It is like a chapter, so each appendix (A, B, C...) must to be considered as a section
 #+end_export
-** TODO Classic Automata and our definition
-The classic automata definition is by a tuple $(S, s_0, \Sigma, \delta, F)$ where $S$ is the set of /States/ and $\delta \colon S \times \Sigma \to S$.
+** Classic Automata and our definition
+The classic, deterministic automata definition is by a tuple $(S, s_0, \Sigma,
+\delta, F)$ where $S$ is the set of /States/ and $\delta \colon S \times \Sigma
+\to S$ is a function fixing the transitions of the machine.
+
+Definitions only differ on $\delta$ and $(E, l)$ respectively, but it's easy to
+see the bijection between both when the automata happens to be deterministic, as
+otherwise $\delta$ cannot be a complete function.
+
+Note that some automatons can be extended with a /sink/ state, to mention all
+labels, and making $\delta$ complete.
+
+*** Classic automata to ours
+ $\delta$ induces the /edges/ and their /labels/. A sample mapping given by
+ $\delta$ can be the following, $\delta(u, a) = v$. This requires that an edge
+ $e\in E$ from $u$ to $v$ exist, and that it's assigned label is $a$, so $l(e)=a$.
+
+*** Our automata to the classical automata
+Given any edge $e=(u,v)$ on $E$, $\delta$ should map $(u, l(e))$ to $v$.

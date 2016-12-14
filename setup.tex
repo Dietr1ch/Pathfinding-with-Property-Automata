@@ -69,6 +69,25 @@
 \usepackage{numprint}
 \npthousandsep{,}
 
+
+% Tikz
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{tikz}
+\usetikzlibrary{arrows,arrows.meta,automata,snakes,positioning,shapes,shapes.geometric,shadows,calc}
+\tikzset{>={Latex[width=3mm,length=3mm]}}
+\tikzset{svertex style/.style={
+    draw=#1,
+    thick,
+    fill=#1!70,
+    text=white,
+    circle,
+    minimum width=0.5cm,
+    minimum height=0.5cm,
+    font=\footnotesize{},
+    outer sep=3pt, % the usage of this option will be clear later on
+  },
+}
+
 %%  % Times fonts, as required by the OGRS
 %%  \usepackage{mathptmx}
 
