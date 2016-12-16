@@ -339,22 +339,26 @@ is really interesting.
 #+begin_export LaTeX
 \appendix % It is like a chapter, so each appendix (A, B, C...) must to be considered as a section
 #+end_export
-** Classic Automata and our definition
-The classic, deterministic automata definition is by a tuple $(S, s_0, \Sigma,
-\delta, F)$ where $S$ is the set of /States/ and $\delta \colon S \times \Sigma
-\to S$ is a function fixing the transitions of the machine.
+** Classic Automata and the Labeled Graph based definition
+The classic, /Deterministic Finite Automata/ (/DFA/) definition is by a tuple $(Q,
+q_0, \Sigma, \delta, F)$ where $Q$ is a finite set of /States/ and $\delta
+\colon Q \times \Sigma \to Q$ is a total function fixing the transitions of the
+machine.
 
-Definitions only differ on $\delta$ and $(E, l)$ respectively, but it's easy to
-see the bijection between both when the automata happens to be deterministic, as
-otherwise $\delta$ cannot be a complete function.
+Definitions differ on how transitions are stated by using $\delta$ or $(E, l)$
+respectively.
 
-Note that some automatons can be extended with a /sink/ state, to mention all
-labels, and making $\delta$ complete.
+A /DFA/ can be transformed into an /Automaton/ by noting that $\delta$ induces
+the /edges/ and their /labels/.
+A sample mapping given by $\delta$ can be the following, $\delta(u, a) = v$.
+This requires that an edge $e\in E$ from $u$ to $v$ exist, and that it's assigned label is $a$, so $l(e)=a$.
 
-*** Classic automata to ours
- $\delta$ induces the /edges/ and their /labels/. A sample mapping given by
- $\delta$ can be the following, $\delta(u, a) = v$. This requires that an edge
- $e\in E$ from $u$ to $v$ exist, and that it's assigned label is $a$, so $l(e)=a$.
+Note that /Automaton/ do not need to have transitions defined for every state
+and label pair, which makes it closer to a /Non-deterministic Finite Automaton/
+(/NFA/) (without empty transitions). Again, a similar transformation can be used
+to turn a /NFA/ into an /Automaton/.
 
-*** Our automata to the classical automata
-Given any edge $e=(u,v)$ on $E$, $\delta$ should map $(u, l(e))$ to $v$.
+An /Automaton/ using finite states and without repeating labels between any pair
+of states can be turned into a /NFA/. To do so, $\delta$ must be built from $(E, l)$.
+Given any edge $e=(u,v)$ on $E$, $\delta$ should map $(u, l(e))$ to the smallest
+possible set containing $v$ satisfying this rule for every other edge.
