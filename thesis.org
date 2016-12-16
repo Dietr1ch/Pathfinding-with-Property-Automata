@@ -138,23 +138,26 @@ Además de la reducción, se estudian optimizaciones y detalles de implementaci�
 
 * TODO Introduction
 ** TODO Background
- People indirectly uses databases many times a day without noticing it.
- Databases are key to manage information in many systems, which store information
- ranging from instant messaging systems, email and documents to media and banking.
- Today, that information is likely to be stored in tables obeying schemas
- carefully tailored for each application.
- This makes linking data across multiple applications hard, if not impossible.
 
- To overcome this lack of
+People indirectly uses databases many times a day without noticing it.
+Databases are key to manage information in many systems, which store information
+ranging from instant messaging systems, email and documents to media and banking.
+Today, that information is likely to be stored in tables obeying schemas
+carefully tailored for each application.
+This makes linking data across multiple applications hard, if not impossible.
 
- Linking data is not only interesting because it's hard to do, but mostly because
- it offers new data to enhance applications.\cite{BaierDRV16}.
+To overcome the lack of connectivity of the stored data, the World Wide Web
+Consortium (W3C) proposed to use the \citeA{RDF} as their recommended model to
+shape and share data.
 
- Today databases are used internally by many applications and systems
+Linking data is not only interesting because it's hard to do, but mostly because
+it offers new data to enhance applications.\cite{BaierDRV16}.
 
- Long ago efforts to understand text were made, but today not all information
- lies on plain text, or tree hierarchies. Techniques and machinery that appeared
- then are not directly useful when working with Graphs.
+Today databases are used internally by many applications and systems
+
+Long ago efforts to understand text were made, but today not all information
+lies on plain text, or tree hierarchies. Techniques and machinery that appeared
+then are not directly useful when working with Graphs.
 
 
 ** TODO Contribution
@@ -177,54 +180,100 @@ Heuristic Search.
 \label{sec:Preliminaries}
 #+end_export
 
-** Graphs.
-Intuitively, a Graph is a collection of objects with information about how those objects are related.
+This section serves as a common basis for the following work. Definitions given
+are slightly different and more general than the usual ones, all in order to ease
 
-*** REVIEW Definition                                                 :def:
-CLOSED: [2016-08-06 Sat 18:43]
+
+** Math
+*** REVIEW Predicates
+		CLOSED: [2016-12-15 Thu 11:45]
+Intuitively, predicates are functions that filter or select elements from some
+collection.
+
+#+LATEX: \begin{definition}[Predicate]
+/Predicates/ are functions mapping some space $X$ into the /Booleans/, which is
+the set\nbsp{}$\set{ \top, \bot }$ denoted by $\Booleans$.
+The set of all predicates over $X$ is denoted by $\Pred{X}$.
+#+LATEX: \end{definition}
+
+When some element is mapped to $\top$, we say that it is /accepted/ by the predicate.
+A predicate $P$ is called /(positively) invertible/ if it is possible to compute
+a set\nbsp{}$P^{-1}$ that holds all the elements accepted by $P$.
+We say that $P$ is /finitely invertible/ when $P^{-1}$ is finite, and call $P$
+/partially invertible/ if any nonempty subset of $P^{-1}$ can be computed.
+
+As a notation abuse, we allow to cast subsets $Y \subset X$ to a predicate over $X$
+that only accepts the elements of $Y$.
+
+*** REVIEW Graphs
+		CLOSED: [2016-12-15 Thu 11:45]
+Intuitively, a Graph is a collection of objects with information about how those
+objects are related.
+
+#+LATEX: \begin{definition}[Graph]
 Given a set $V$, a /Graph/ is a pair /vertices/ and /edges/, $(V, E)$, where $E$
-is a collection of elements from $V^2$. $E$ is usually a set, but when it allows
-duplication, the /Graph/ is called a /Multi-Graph/ as multiple edges can join
-the same pair of vertices.
+is a collection of elements from $V^2$.
+#+LATEX: \end{definition}
+$E$ is usually a set, but when it allows duplication, the /Graph/ is called a
+/Multi-Graph/ as multiple edges can join the same pair of vertices.
 
-The relation given by $E$ can be further detailed by using a set of labels $\Sigma$ and
+#+LATEX: \begin{definition}[Labeled Graph]
+The relation given by $E$ can be detailed by using a set of labels $\Sigma$ and
 a function $l\colon E \to \Sigma$ that assigns labels to each edge.
 
 With this in mind, we define a /Labeled Graph/ as the tuple $(V, E, \Sigma, l)$.
 We say that a Labeled Graph is /self-labeled/ when $\Sigma=V$.
+#+LATEX: \end{definition}
 
 It's easy to find examples that use graphs, for example consider $V$ as a set of
 people, and $E$ as arcs that depict relations between the people. To explain
-each relation on $E$, the label $\Sigma$ can contain, for example, /friends/,
+each relation from $E$, the label $\Sigma$ can contain, for example, /friends/,
 /best-friends/, /ex-girlfriend/ can be used.
 
-** Automata.
-An /Automaton/ is a Labeled Graph extended to describe patterns of labels. The
-patterns describes are the labels of a path starting from a fixed vertex that
-end on selected vertices.
-Note that the classical definition by definition by \citeA{AutomataTheory} is
-more strict, as it implicitly imposes restrictions on the graph. The relation
-between both definitions is discussed on the appendix.
+** Automata
+An /Automaton/ is a Labeled Graph extended to describe sequences.
 
-*** TODO Definition                                                 :def:
-Given a Labeled Graph $(S, T, \Sigma, l)$, where $S$ is a set of /States/, and
-$T$ a collection /Transitions/, an /Automaton/, is the tuple $(S, T, \Sigma, l,
-s_0, F)$, where $s_0 \in S$ is the /starting state/, and $F \subset S$ is the
-set of /final states/.
+Automatons are thought as representations of machines, so different terminology
+is used. Vertices are used to denote internal /States/ of a machine, and
+edges show which /Transitions/ of states are possible. Transitions require
+specific input to happen, which is specified by the label of each transition.
 
+The sequences described are the inputs used to transition from a fixed /initial
+state/ to some /final state/. Any sequence that allows reaching a final state
+after consuming all the input is considered /accepted/; hence, making the
+automaton a predicate for sequences of inputs. Note that this requires sequences
+to be finite, although it is possible to extend the notion to infinite
+sequences, it is not useful for most computations as executions must be finite.
 
+#+LATEX: \begin{definition}[Automaton]
+Given a Labeled Graph $(Q, T, \Pred{\Sigma}, l)$, where $Q$ is a set of /States/,
+$T$ a collection /Transitions/, and $l$ assigns predicates on $\Pred{\Sigma}$
+to each transition, we define an /Automaton/ as the tuple
+$(Q, T, \Pred{\Sigma}, l, q_0, F)$, where $q_0 \in Q$ is the /starting state/,
+and $F\in \Pred{S}$ is a predicate that selects the /final states/.
+#+LATEX: \end{definition}
 
-** Semantic Web
+Note that the classical definitions by \citeA{AutomataTheory} distinguish
+different kinds of machines. The relation between this Labeled Graph based
+definition and previous ones is discussed on the appendix.
+
+** The Semantic Web Graph
+
+The goal of the Semantic Web, is to build a
+
 
 ** Search Problem.
 Lorem ipsum.
 *** Heuristic Search
+# http://stackoverflow.com/questions/29470253/astar-explanation-of-name
+
 
 * Property Automata
 On this chapter we will develop a finite-state machine to accept or reject a labeled path.
 ** Definition.
-*** TODO Filters
-*** TODO Automata
+*** TODO Property Automata
+A /Property Automata/ is an /Automata/ enhanced with additional
+
 ** Induced Heuristic.
 *** TODO Computing the Heuristic
 *** TODO Consistency.
@@ -236,13 +285,19 @@ On this chapter we will develop a finite-state machine to accept or reject a lab
 ** TODO Multi-point search.
   - Filter invertibility.
 ** Remarks
-Note that the Search with Property Automata can simulate old Automata if the database $(\set{s_0}, \set{(s_0, s_0), \Sigma, l}$ is considered, where $l(s_0) = 2^\Sigma$.
+Note that the Search with Property Automata can simulate old Automata if the database $(\set{q_0}, \set{(q_0, q_0), \Sigma, l}$ is considered, where $l(q_0) = 2^\Sigma$.
 Not only it happens that the paths (words) accepted are the same, but also that given a Query (regular expression), paths (words) can be gathered exhaustively in an ordered way.
+
+
 * Searching on the Semantic Web
 ** TODO The Semantic Web Graph.
 ** TODO Limitations of the Web.
 ** TODO Search Problem.
 ** TODO Evaluation.
+
+To test the feasibility of navigating the web through documents
+
+
 * Conclusions
 * TODO Future Work
 ** Automata
