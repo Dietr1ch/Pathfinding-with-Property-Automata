@@ -261,6 +261,30 @@ different kinds of machines. The relation between this Labeled Graph based
 definition and Non-deterministic finite automaton is discussed on the appendix.
 
 
+** Resource Description Framework
+The Resource Description Framework, /RDF/, is the building block of the
+/Semantic Web/. It standardizes how to publish pieces of a universal graph where
+anyone can share and consume data.
+
+RDF requires $3$ disjoint sets to exist, the /IRIs/ $\IRI$, the /Blank Nodes/ $\Blank$,
+ and the /Literals/ $\Lit$.
+/IRIs/ are special, as they allow to retrieve information from the web by dereferencing. /Blank
+ Nodes/ serve as anonymous /IRIs/ that join information, but cannot be
+ dereferenced. And finally /Literals/ are information by themselves, such as
+ text or dates.
+
+#+LATEX: \begin{definition}[RDF triple]
+/RDF triples/ are triples $(s, p, o) \in (\IRI \cup \Blank) \times \IRI \times (\IRI \cup \Blank \cup \Lit)$,
+where $s$ is known as the /subject/, $p$ as the predicate, and $o$ as the
+/object/.
+#+LATEX: \end{definition}
+An RDF Triple states that the predicate $p$ holds for the pair of vertices $(s,
+o)$ on the graph. Note that predicates *must* be /IRIs/, this is key to
+encourage the use of a common vocabulary among all publishers of RDF Triples,
+also subjects and objects can be data from different servers, allowing
+information to be linked to the original source instead of being duplicated.
+
+
 ** The Semantic Web Graph
 
 The goal of the Semantic Web, is to build a
