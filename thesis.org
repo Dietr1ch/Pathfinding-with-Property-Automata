@@ -448,3 +448,957 @@ Given any edge $e=(u,v)$ on $E$, $\delta$ should map $(u, l(e))$ to the smallest
 possible set containing $v$ satisfying this rule for every other edge.
 
 
+** Complete evaluation                                             :yoexport:
+
+*** Queries
+**** Prefixes used
+
+#+CAPTION: Common prefixes used and their full IRIs
+#+NAME:   lst:prefixes-common
+#+begin_src sparql
+prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl:  <http://www.w3.org/2002/07/owl#>
+prefix dc:   <http://purl.org/dc/elements/1.1/>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+#+end_src
+
+
+#+CAPTION: Prefixes from dbPedia
+#+NAME:   lst:prefixes-dbpedia
+#+begin_src sparql
+prefix dbo: <http://dbpedia.org/ontology/>
+prefix dbr: <http://dbpedia.org/resource/>
+prefix dbc: <http://dbpedia.org/resource/Category:>
+prefix dct: <http://purl.org/dc/terms/>
+#+end_src
+
+
+#+CAPTION: Prefixes from DBLP
+#+NAME:   lst:prefixes-dblp
+#+begin_src sparql
+prefix dblp:       <http://dblp.L3S.de/>
+prefix dblpAuthor: <http://dblp.L3S.de/Authors/>
+#+end_src
+
+
+#+CAPTION: Prefixes from YAGO
+#+NAME:   lst:prefixes-yago
+#+begin_src sparql
+prefix yago: <http://yago-knowledge.org/resource/>
+prefix frmb: <http://framebase.org/ns/>
+#+end_src
+#+LaTeX: \newpage
+
+#+CAPTION: Prefixes from Linked Movie Database
+#+NAME:   lst:prefixes-lmdb
+#+begin_src sparql
+prefix lmdbActor: <http://data.linkedmdb.org/resource/actor>
+prefix lmdbMovie: <http://data.linkedmdb.org/resource/movie>
+#+end_src
+
+
+#+CAPTION: Other prefixes used
+#+NAME:   lst:prefixes-other
+#+begin_src sparql
+prefix d2r:     <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#>
+prefix dbc:     <http://dbpedia.org/resource/Category:>
+prefix dbo:     <http://dbpedia.org/ontology/>
+prefix dbr:     <http://dbpedia.org/resource/>
+prefix dct:     <http://purl.org/dc/terms/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix map:     <file:///home/diederich/d2r-server-0.3.2/dblp-mapping.n3#>
+prefix swrc:    <http://swrc.ontoware.org/ontology#>
+prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
+#+end_src
+
+
+**** Q10  Publications                                    :dbpedia:selected:
+#+begin_src sparql
+select * where {
+ dblpAuthor:Michael_Stonebraker  ^dc:creator/dc:title  ?paper
+}
+#+end_src
+
+
+**** Q11  Journals                                        :dbpedia:selected:
+#+begin_src sparql
+select * where {
+ dblpAuthor:Michael_Stonebraker  ^dc:creator/swrc:journal/rdfs:label  ?paper
+}
+#+end_src
+
+
+**** Q12  Conferences                                     :dbpedia:selected:
+#+begin_src sparql
+select * where {
+ dblpAuthor:Michael_Stonebraker  ^dc:creator/swrc:series/rdfs:label  ?paper
+}
+#+end_src
+
+
+**** Q13  CoAuthor                                        :dbpedia:selected:
+#+begin_src sparql
+select * where {
+ dblpAuthor:Michael_Stonebraker  ^dc:creator/dc:creator/rdfs:label  ?paper
+}
+#+end_src
+
+
+**** Q14  CoAuthor* IRIs                                  :dbpedia:selected:
+#+begin_src sparql
+select * where {
+ dblpAuthor:Michael_Stonebraker  (^dc:creator/dc:creator)*  ?paper
+}
+#+end_src
+
+
+**** Q15  CoAuthor*                                       :dbpedia:selected:
+#+begin_src sparql
+select * where {
+ dblpAuthor:Michael_Stonebraker  (^dc:creator/dc:creator)*/rdfs:label  ?paper
+}
+#+end_src
+
+
+**** Q20  CoActor*                                        :dbpedia:selected:
+#+begin_src sparql
+select * where {
+ dbr:Kevin_Bacon  (^dbo:starring/dbo:starring)*/rdfs:label  ?coActorName
+}
+#+end_src
+
+
+**** Q22  CoActor* IRIs                                      :yago:selected:
+#+begin_src sparql
+select * where {
+ # ((frmb:plays|yago:actedIn)/(^frmb:plays|^yago:actedIn))* was used on navigation, it's harder
+ yago:Kevin_Bacon  (frmb:dereif-Performers_and_roles-playsInPerformance/^frmb:dereif-Performers_and_roles-playsInPerformance)* ?coActorIRI
+}
+	#+end_src
+
+
+**** Q23  CoActor* sameAs                   :any:yago:dbpedia:lmdb:selected:
+#+begin_src sparql
+select * where {
+# It's a mess!!
+#	dbr:Kevin_Bacon  owl:sameAs*/
+#									(
+#										( (  ^dbo:starring
+#												|^dbo:starring
+#											)
+#										)/
+#									 owl:sameAs*/
+#
+#(  (^dbo:starring/dbo:starring)
+#										| (^dbo:starring/dbo:starring)
+#										| (owl:sameAs)
+#									)*
+#									/rdfs:label  ?coActorName
+}
+select * where {
+	# ((frmb:plays|yago:actedIn)/(^frmb:plays|^yago:actedIn))* was used on navigation, it's harder
+	yago:Kevin_Bacon  (frmb:dereif-Performers_and_roles-playsInPerformance/^frmb:dereif-Performers_and_roles-playsInPerformance)* ?coActorIRI
+}
+#+end_src
+
+
+**** Q30  NATO Business'                            :yago:selected:gubichev:
+#+begin_src sparql
+select * where {
+ yago:wikicat_Member_states_of_NATO ^rdf:type/^yago:dealsWith/(yago:isLocatedIn*) ?place
+}
+#+end_src
+
+
+**** Q32  Airports in Netherlands                   :yago:selected:gubichev:
+#+begin_src sparql
+select * where {
+ yago:wikicat_Capitals_in_Europe ^rdf:type/yago:isLocatedIn* ?place
+}
+#+end_src
+
+
+
+*** Sample executions
+*** figures                                                        :noexport:
+
+#+begin_export latex
+\begin{figure*}
+	\centering
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q10-Publications/p1/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q10-Publications/p1/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q10-Publications/p1/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q10-Publications/p10/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q10-Publications/p10/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q10-Publications/p10/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q10-Publications/p20/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q10-Publications/p20/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q10-Publications/p20/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q10-Publications/p40/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q10-Publications/p40/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q10-Publications/p40/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+	\caption{q10-Publications}
+	\label{fig:LABEL}
+\end{figure*}
+
+
+
+
+\begin{figure*}
+	\centering
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q11-Journals/p1/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q11-Journals/p1/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q11-Journals/p1/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q11-Journals/p10/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q11-Journals/p10/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q11-Journals/p10/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q11-Journals/p20/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q11-Journals/p20/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q11-Journals/p20/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q11-Journals/p40/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q11-Journals/p40/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q11-Journals/p40/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+	\caption{q11-Journals}
+	\label{fig:LABEL}
+\end{figure*}
+
+
+
+
+\begin{figure*}
+	\centering
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q12-Conferences/p1/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q12-Conferences/p1/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q12-Conferences/p1/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q12-Conferences/p10/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q12-Conferences/p10/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q12-Conferences/p10/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q12-Conferences/p20/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q12-Conferences/p20/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q12-Conferences/p20/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q12-Conferences/p40/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q12-Conferences/p40/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q12-Conferences/p40/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+	\caption{q12-Conferences}
+	\label{fig:LABEL}
+\end{figure*}
+
+
+
+
+\begin{figure*}
+	\centering
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q13-Direct_Coauthors/p1/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q13-Direct_Coauthors/p1/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q13-Direct_Coauthors/p1/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q13-Direct_Coauthors/p10/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q13-Direct_Coauthors/p10/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q13-Direct_Coauthors/p10/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q13-Direct_Coauthors/p20/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q13-Direct_Coauthors/p20/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q13-Direct_Coauthors/p20/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q13-Direct_Coauthors/p40/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q13-Direct_Coauthors/p40/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q13-Direct_Coauthors/p40/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+	\caption{q13-Direct\_Coauthors}
+	\label{fig:LABEL}
+\end{figure*}
+
+
+
+
+\begin{figure*}
+	\centering
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q14-CoauthorStar_IRI/p1/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q14-CoauthorStar_IRI/p1/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q14-CoauthorStar_IRI/p1/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q14-CoauthorStar_IRI/p10/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q14-CoauthorStar_IRI/p10/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q14-CoauthorStar_IRI/p10/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q14-CoauthorStar_IRI/p20/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q14-CoauthorStar_IRI/p20/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q14-CoauthorStar_IRI/p20/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q14-CoauthorStar_IRI/p40/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q14-CoauthorStar_IRI/p40/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q14-CoauthorStar_IRI/p40/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+	\caption{q14-CoauthorStar\_IRI}
+	\label{fig:LABEL}
+\end{figure*}
+
+
+
+
+\begin{figure*}
+	\centering
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q15-CoauthorStar/p1/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q15-CoauthorStar/p1/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q15-CoauthorStar/p1/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q15-CoauthorStar/p10/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q15-CoauthorStar/p10/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q15-CoauthorStar/p10/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q15-CoauthorStar/p20/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q15-CoauthorStar/p20/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q15-CoauthorStar/p20/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q15-CoauthorStar/p40/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q15-CoauthorStar/p40/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q15-CoauthorStar/p40/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+	\caption{q15-CoauthorStar}
+	\label{fig:LABEL}
+\end{figure*}
+
+
+
+
+\begin{figure*}
+	\centering
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q20-CoactorStar__DBPEDIA/p1/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q20-CoactorStar__DBPEDIA/p1/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q20-CoactorStar__DBPEDIA/p1/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q20-CoactorStar__DBPEDIA/p10/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q20-CoactorStar__DBPEDIA/p10/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q20-CoactorStar__DBPEDIA/p10/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q20-CoactorStar__DBPEDIA/p20/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q20-CoactorStar__DBPEDIA/p20/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q20-CoactorStar__DBPEDIA/p20/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q20-CoactorStar__DBPEDIA/p40/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q20-CoactorStar__DBPEDIA/p40/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q20-CoactorStar__DBPEDIA/p40/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+	\caption{q20-CoactorStar--DBPEDIA}
+	\label{fig:LABEL}
+\end{figure*}
+
+
+
+
+\begin{figure*}
+	\centering
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q22-CoactorStar_IRI__YAGO/p1/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q22-CoactorStar_IRI__YAGO/p1/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q22-CoactorStar_IRI__YAGO/p1/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q22-CoactorStar_IRI__YAGO/p10/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q22-CoactorStar_IRI__YAGO/p10/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q22-CoactorStar_IRI__YAGO/p10/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q22-CoactorStar_IRI__YAGO/p20/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q22-CoactorStar_IRI__YAGO/p20/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q22-CoactorStar_IRI__YAGO/p20/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q22-CoactorStar_IRI__YAGO/p40/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q22-CoactorStar_IRI__YAGO/p40/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q22-CoactorStar_IRI__YAGO/p40/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+	\caption{q22-CoactorStar\_IRI--YAGO}
+	\label{fig:LABEL}
+\end{figure*}
+
+
+
+
+\begin{figure*}
+	\centering
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q23-CoactorStar__ANY/p1/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q23-CoactorStar__ANY/p1/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q23-CoactorStar__ANY/p1/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q23-CoactorStar__ANY/p10/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q23-CoactorStar__ANY/p10/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q23-CoactorStar__ANY/p10/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q23-CoactorStar__ANY/p20/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q23-CoactorStar__ANY/p20/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q23-CoactorStar__ANY/p20/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q23-CoactorStar__ANY/p40/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q23-CoactorStar__ANY/p40/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q23-CoactorStar__ANY/p40/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+	\caption{q23-CoactorStar--ANY}
+	\label{fig:LABEL}
+\end{figure*}
+
+
+
+
+\begin{figure*}
+	\centering
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q30-NATO_Business/p1/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q30-NATO_Business/p1/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q30-NATO_Business/p1/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q30-NATO_Business/p10/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q30-NATO_Business/p10/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q30-NATO_Business/p10/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q30-NATO_Business/p20/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q30-NATO_Business/p20/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q30-NATO_Business/p20/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q30-NATO_Business/p40/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q30-NATO_Business/p40/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q30-NATO_Business/p40/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+	\caption{q30-NATO\_Business}
+	\label{fig:LABEL}
+\end{figure*}
+
+
+
+
+\begin{figure*}
+	\centering
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q32-AirportsInNetherlands/p1/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q32-AirportsInNetherlands/p1/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q32-AirportsInNetherlands/p1/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q32-AirportsInNetherlands/p10/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q32-AirportsInNetherlands/p10/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q32-AirportsInNetherlands/p10/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q32-AirportsInNetherlands/p20/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q32-AirportsInNetherlands/p20/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q32-AirportsInNetherlands/p20/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+
+
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q32-AirportsInNetherlands/p40/quick/goals_found-remote_expansions.pdf}
+	\end{subfigure}%
+	~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q32-AirportsInNetherlands/p40/quick/wallClock-remote_expansions.pdf}
+	\end{subfigure}%
+	 ~
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=.32\linewidth]{./figures/experiments/q32-AirportsInNetherlands/p40/quick/memory-remote_expansions.pdf}
+	\end{subfigure}%
+	\caption{q32-AirportsInNetherlands}
+	\label{fig:LABEL}
+\end{figure*}
+#+end_export
