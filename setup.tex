@@ -58,6 +58,9 @@
 % ================
 \usepackage[left=4cm, top=3cm, bottom=4cm, right=2.5cm]{geometry}
 
+
+% Defines
+% -------
 \usepackage{mathtools}
 \newcommand{\on}[1]{\operatorname{#1}}
 \DeclarePairedDelimiter\set{\{}{\}}
@@ -65,8 +68,19 @@
 \DeclarePairedDelimiter\sizeof{\|}{\|}
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
-\newcommand{\Booleans}{\mathcal{B}}
+
+% Number sets
+\newcommand{\Booleans}{\mathbb{B}}
+\newcommand{\Naturals}{\mathbb{N}}
+\newcommand{\Integers}{\mathbb{Z}}
+\newcommand{\Rationals}{\mathbb{Q}}
+\newcommand{\Reals}{\mathbb{R}}
+\newcommand{\Complex}{\mathbb{C}}
+
 \newcommand{\Pred}[1]{\mathcal{P}(#1)}
+\newcommand{\IRI}{\mathbf{I}}
+\newcommand{\Blank}{\mathbf{B}}
+\newcommand{\Lit}{\mathbf{L}}
 
 \usepackage{numprint}
 \npthousandsep{,}

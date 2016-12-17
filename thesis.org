@@ -180,8 +180,11 @@ Heuristic Search.
 \label{sec:Preliminaries}
 #+end_export
 
-This section serves as a common basis for the following work. Definitions given
-are slightly different and more general than the usual ones, all in order to ease
+This chapter serves as a common basis for the following work. Definitions given
+are slightly different and more general than the usual ones, all in order to
+ease upcoming definitions.
+
+The chapter is as brief as possible, but it's accompanied by examples on the appendix.
 
 
 ** Math
@@ -192,7 +195,7 @@ collection.
 
 #+LATEX: \begin{definition}[Predicate]
 /Predicates/ are functions mapping some space $X$ into the /Booleans/, which is
-the set\nbsp{}$\set{ \top, \bot }$ denoted by $\Booleans$.
+the set\nbsp{}$\set{ \top, \bot }$.
 The set of all predicates over $X$ is denoted by $\Pred{X}$.
 #+LATEX: \end{definition}
 
@@ -215,7 +218,7 @@ Given a set $V$, a /Graph/ is a pair /vertices/ and /edges/, $(V, E)$, where $E$
 is a collection of elements from $V^2$.
 #+LATEX: \end{definition}
 $E$ is usually a set, but when it allows duplication, the /Graph/ is called a
-/Multi-Graph/ as multiple edges can join the same pair of vertices.
+/Multi-Graph/ as multiple, distinguishable edges can join the same pair of vertices.
 
 #+LATEX: \begin{definition}[Labeled Graph]
 The relation given by $E$ can be detailed by using a set of labels $\Sigma$ and
@@ -255,7 +258,8 @@ and $F\in \Pred{S}$ is a predicate that selects the /final states/.
 
 Note that the classical definitions by \citeA{AutomataTheory} distinguish
 different kinds of machines. The relation between this Labeled Graph based
-definition and previous ones is discussed on the appendix.
+definition and Non-deterministic finite automaton is discussed on the appendix.
+
 
 ** The Semantic Web Graph
 
