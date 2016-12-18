@@ -195,7 +195,7 @@ collection.
 
 #+LATEX: \begin{definition}[Predicate]
 /Predicates/ are functions mapping some space $X$ into the /Booleans/, which is
-the set\nbsp{}$\set{ \top, \bot }$.
+the set\nbsp{}$\Booleans = \set{ \top, \bot }$.
 The set of all predicates over $X$ is denoted by $\Pred{X}$.
 #+LATEX: \end{definition}
 
@@ -220,18 +220,26 @@ is a collection of elements from $V^2$.
 $E$ is usually a set, but when it allows duplication, the /Graph/ is called a
 /Multi-Graph/ as multiple, distinguishable edges can join the same pair of vertices.
 
-#+LATEX: \begin{definition}[Labeled Graph]
-The relation given by $E$ can be detailed by using a set of labels $\Sigma$ and
-a function $l\colon E \to \Sigma$ that assigns labels to each edge.
 
-With this in mind, we define a /Labeled Graph/ as the tuple $(V, E, \Sigma, l)$.
-We say that a Labeled Graph is /self-labeled/ when $\Sigma=V$.
+The data can be added to the graph in form of labels.
+#+LATEX: \begin{definition}[Labeled Graph]
+Given a graph $(V, E)$ and functions $v_{\Sigma}\colon V \to \Sigma$ and
+$e_{\Tau}\colon E \to \Tau$ assigning Labels from $\Sigma$ and $\Tau$ to vertices
+and edges respectively, we define a /Labeled Graph/ $\LG$ is the
+tuple $(V, E, v_{\Sigma}, e_{\Tau})$
+
+We say that a Labeled Graph is /self-labeled/ when $\Tau=V$.
+
+When $\Sigma$ or $\Tau$ are unused, simpler graphs result.
+We call  $\Gr^\Tau=\Gr_1^\Tau$    an /edge-labeled Graph/, and
+				 $\Gr_\Sigma=\Gr_\Sigma^1$ a /vertex-labeled Graph/.
 #+LATEX: \end{definition}
 
 It's easy to find examples that use graphs, for example consider $V$ as a set of
 people, and $E$ as arcs that depict relations between the people. To explain
-each relation from $E$, the label $\Sigma$ can contain, for example, /friends/,
-/best-friends/, /ex-girlfriend/ can be used.
+each relation from $E$, the edge label-set $\Tau$ can contain, for example,
+/friends/, /best-friends/, /ex-girlfriend/ can be used, also, data, like the age
+of each person, can be added by using $\Sigma=\Naturals$.
 
 ** Automata
 An /Automaton/ is a Labeled Graph extended to describe sequences.
