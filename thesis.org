@@ -580,35 +580,25 @@ select * where {
 **** Q22  CoActor* IRIs                                      :yago:selected:
 #+begin_src sparql
 select * where {
- # ((frmb:plays|yago:actedIn)/(^frmb:plays|^yago:actedIn))* was used on navigation, it's harder
- yago:Kevin_Bacon  (frmb:dereif-Performers_and_roles-playsInPerformance/^frmb:dereif-Performers_and_roles-playsInPerformance)* ?coActorIRI
+ # yago:actedIn was also used on navigation, making the query harder
+ yago:Kevin_Bacon
+ (frmb:dereif-Performers_and_roles-playsInPerformance/
+ ^frmb:dereif-Performers_and_roles-playsInPerformance)*
+ ?coActorIRI
 }
 	#+end_src
-
+#+LaTeX: \newpage
 
 **** Q23  CoActor* sameAs                   :any:yago:dbpedia:lmdb:selected:
-#+begin_src sparql
-select * where {
-# It's a mess!!
-#	dbr:Kevin_Bacon  owl:sameAs*/
-#									(
-#										( (  ^dbo:starring
-#												|^dbo:starring
-#											)
-#										)/
-#									 owl:sameAs*/
-#
-#(  (^dbo:starring/dbo:starring)
-#										| (^dbo:starring/dbo:starring)
-#										| (owl:sameAs)
-#									)*
-#									/rdfs:label  ?coActorName
-}
-select * where {
-	# ((frmb:plays|yago:actedIn)/(^frmb:plays|^yago:actedIn))* was used on navigation, it's harder
-	yago:Kevin_Bacon  (frmb:dereif-Performers_and_roles-playsInPerformance/^frmb:dereif-Performers_and_roles-playsInPerformance)* ?coActorIRI
-}
-#+end_src
+
+This query is similar to Q22, but has no equivalent on SPARQL, as execution may
+consult arbitrary services.
+
+The SPARQL analogue is huge due to non-determinism to determinism transformation.
+To construct this query add ~owl:sameAs~ loops on every node, and consider
+alternate predicates ~dbo:starring~,
+~frmb:dereif-Performers_and_roles-playsInPerformance~ along with ~yago:actedIn~
+on any possible arc.
 
 
 **** Q30  NATO Business'                            :yago:selected:gubichev:
@@ -627,7 +617,7 @@ select * where {
 #+end_src
 
 
-
+#+LaTeX: \newpage
 *** Sample executions
 *** figures                                                        :noexport:
 
@@ -1410,3 +1400,16 @@ select * where {
 	\label{fig:LABEL}
 \end{figure*}
 #+end_export
+
+
+** Examples for preliminaries
+
+*** TODO Graph
+
+*** TODO Labeled Graph
+
+*** TODO Automaton
+
+*** TODO RDF
+
+*** TODO Semantic Web
