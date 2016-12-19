@@ -258,12 +258,38 @@ automaton a predicate for sequences of inputs. Note that this requires sequences
 to be finite, although it is possible to extend the notion to infinite
 sequences, it is not useful for most computations as executions must be finite.
 
-#+LATEX: \begin{definition}[Automaton]
-Given a Labeled Graph $(Q, T, \Pred{\Sigma}, l)$, where $Q$ is a set of /States/,
-$T$ a collection /Transitions/, and $l$ assigns predicates on $\Pred{\Sigma}$
-to each transition, we define an /Automaton/ as the tuple
-$(Q, T, \Pred{\Sigma}, l, q_0, F)$, where $q_0 \in Q$ is the /starting state/,
-and $F\in \Pred{S}$ is a predicate that selects the /final states/.
+Automata will be used to match paths in some graph $\Gr$, on $\Gr$ we might need
+to traverse edges on their intended direction, or in reverse. Considering this,
+we define /directed sets/, to allow the distinction.
+#+LATEX: \begin{definition}[Directed Set]
+Let $\Tau$ be any set, we define $\Tau^\pm$, the directed set of $\Tau$, as the
+union of $\set{\tau^+\mid \tau\in \Tau}$, and $\set{\tau^-\mid \tau\in \Tau}$.
+#+LATEX: \end{definition}
+
+#+LATEX: \begin{definition}[Automata]
+Let $G_\Pred{\Sigma}^\Pred{\Tau^\pm} = (V, E, v_\Pred{\Sigma}, e_\Pred{\Tau^\pm})$ be a
+labeled Graph, some $v_0 \in V$ the /initial vertex/, and $f\colon V \to \Booleans$ a
+predicate selecting /final states/.
+
+Let $\Tau^\pm$ be the union of $\set{\tau^+\mid \tau\in \Tau}$, and
+$\set{\tau^-\mid \tau\in \Tau}$.
+We define an Automaton $\A$ as the tuple $(G_\Pred{\Sigma}^\Pred{\Tau^\pm}, v_0,
+f)$, where $\Tau^\pm =  \set{\tau^+\mid \tau\in \Tau} \cup \set{\tau^-\mid \tau\in \Tau}$
+#+LATEX: \end{definition}
+
+#+LATEX: \begin{definition}[Automata execution]
+The automaton $\A$ is said to /accept/ some path in a graph $\Gr$ from some vertex
+$v\in \A_v$ and a node $n\in \Gr_v$, which is denoted by $accept(\A, \Gr, v, s)$
+if \textbf{any} of the following conditions is satisfied,
+\begin{itemize}
+\item $\A_f(s, q)$,\; the state \emph{accepts} the node.
+\item There exist some $(s,p,o) \in \Gr$, and $(v, v') \in \A_E$ satisfying \textbf{all} the following,
+\begin{itemize}
+\item $\A_e((v,v'), p)$,\; the edge $p$ is \emph{allowed} by the transition $(v, v')$,
+\item $\A_v(v', o)$,\; the vertex $o$ is \emph{allowed} by state $v'$,
+\item $accept(\A, \Gr, v', o)$,\; the resulting $(state, node)$ is \emph{accepted}.
+\end{itemize}
+\end{itemize}
 #+LATEX: \end{definition}
 
 Note that the classical definitions by \citeA{AutomataTheory} distinguish
