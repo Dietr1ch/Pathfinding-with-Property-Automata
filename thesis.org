@@ -228,7 +228,7 @@ $e_{\Tau}\colon E \to \Tau$ assigning Labels from $\Sigma$ and $\Tau$ to vertice
 and edges respectively, we define a /Labeled Graph/ $\LG$ is the
 tuple $(V, E, v_{\Sigma}, e_{\Tau})$
 
-We say that a Labeled Graph is /self-labeled/ when $\Tau=V$.
+We say that a Labeled Graph is /self-labeled/ when $\Tau \subseteq V$.
 
 When $\Sigma$ or $\Tau$ are unused, simpler graphs result.
 We call  $\Gr^\Tau=\Gr_1^\Tau$    an /edge-labeled Graph/, and
@@ -241,10 +241,12 @@ each relation from $E$, the edge label-set $\Tau$ can contain, for example,
 /friends/, /best-friends/, /ex-girlfriend/ can be used, also, data, like the age
 of each person, can be added by using $\Sigma=\Naturals$.
 
-** Automata
-An /Automaton/ is a Labeled Graph extended to describe sequences.
 
-Automatons are thought as representations of machines, so different terminology
+** Automata
+An /Automaton/ is a Graph labeled with predicates over vertex and edge data
+extended to describe sequences.
+
+Automata are thought as representations of machines, so different terminology
 is used. Vertices are used to denote internal /States/ of a machine, and
 edges show which /Transitions/ of states are possible. Transitions require
 specific input to happen, which is specified by the label of each transition.
@@ -1403,6 +1405,33 @@ select * where {
 
 
 ** Examples for preliminaries
+*** REVIEW Predicate
+		CLOSED: [2016-12-17 Sat 14:05]
+Predicates are simply functions that, for some fixed arbitrary, output either
+/true/\nbsp($\top$) or /false/\nbsp($\bot$).
+
+#+CAPTION: Some example predicates
+#+NAME:   lst:predicates
+#+begin_src haskell
+lessThanFive x = x < 5
+naturalLessThanFive x = 0<=x && x<5
+palindrome s = s==reverse(s)
+ordered a b = a < b
+perfectSquare a b c = a*a + b*b = c*c
+onlyOnOneSet x sa sb = (s `in` sa) /= (s `in` sb)
+#+end_src
+
+Note that, if we assume that ~lessThanFive~ and ~naturalLessThanFive~ take
+integers, we can invert both functions, but only ~naturalLessThanFive~ is
+/finitely invertible/, as only $\set{0, 1, 2, 3, 4}$ are mapped to /true/.
+
+The /finitely invertible/ concept is important for computation, as it allows to
+filter all the unknown and possible inputs to a known finite set. This concept
+does not tries to capture feasibility, as knowledge about finite, but very large
+sets can be as useless as no knowledge at all.
+
+As computability is our concern, we will not try to discover inverses for
+arbitrary functions, and we will only use inverses for some known functions.
 
 *** TODO Graph
 
