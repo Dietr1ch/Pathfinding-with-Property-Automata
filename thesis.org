@@ -140,24 +140,57 @@ Además de la reducción, se estudian optimizaciones y detalles de implementaci�
 ** TODO Background
 
 People indirectly uses databases many times a day without noticing it.
-Databases are key to manage information in many systems, which store information
-ranging from instant messaging systems, email and documents to media and banking.
-Today, that information is likely to be stored in tables obeying schemas
+Database systems are key to manage information in many systems, which store
+information ranging from instant messaging systems, email and documents to media
+and banking.
+Today, that information is likely to be stored in tables structured by /schemas/
 carefully tailored for each application.
-This makes linking data across multiple applications hard, if not impossible.
+This makes linking data across multiple applications hard, if not impossible as
+the underlying layout will probably be incompatible.
+Linking data is interesting because it would allow to enhance applications using
+data that currently is unavailable to them.
 
-To overcome the lack of connectivity of the stored data, the World Wide Web
-Consortium (W3C) proposed to use the \citeA{RDF} as their recommended model to
-shape and share data.
+To overcome the lack of connectivity of the data between multiple databases, the
+/World Wide Web Consortium/ (W3C) proposed to use the /Resource Description
+Framework/ (RDF) as their recommended model to shape and share data \cite{RDF}.
 
-Linking data is not only interesting because it's hard to do, but mostly because
-it offers new data to enhance applications.\cite{BaierDRV16}.
+However, having a common model as /RDF/ for the data is not enough, as the final
+goal is to retrieve data when needed.
+The /Structured Query Language/, /SQL/, was the standard language to query
+tables, and it inspired /SPARQL/, a query language backed by the W3C.
 
-Today databases are used internally by many applications and systems
+/SPARQL/ started being /Simple Protocol and RDF Query Language/ but has evolved
+enough to drop the acronym.
 
-Long ago efforts to understand text were made, but today not all information
-lies on plain text, or tree hierarchies. Techniques and machinery that appeared
-then are not directly useful when working with Graphs.
+Sharing the same client-server architecture, /SPARQL/ allowed to query the all
+the data on the server, but this resembled old, disjoint querying on /SQL/ as it
+did not allowed to query across servers.
+/SPARQL/ latest revision, 1.1, introduced /federated queries/, which finally
+allowed to query multiple servers, but it requires to know all the servers when
+building the query, so it cannot gracefully browse the web of data.
+
+/SPARQL/ is not the only way to access the /RDF/ data on the web, other
+approaches like /NautiLOD/ \cite{NautiLOD} use /RDF/ data from documents exposed
+by the servers and follow links to gather data, which is quite similarly to how
+we browse the web today.
+This navigational approach is so far the closest to the original /RDF/ goal of
+exposing data to be published and consulted by everyone.
+Navigation offers several advantages over /SPARQL/, as gathering answers
+incrementally, providing proofs for each answer, and reusing the web's caching
+infrastructure in a friendlier way as data is cached instead of particular
+query results.
+
+Systems based on /SPARQL/ and navigation work today for simple queries where
+answers have fixed length, but not all interesting queries fit that profile.
+/SPARQL/ 1.1 also introduced support for /Property Paths/ queries as a way to
+express queries of arbitrary length.
+
+/Property Paths/ queries has proven to be difficult to answer on /SPARQL/
+endpoints as reported by many, even when answering queries  \citeA{BaierDRV16}
+ (TODO add more reports, like Gubichev's).
+On the navigational side, these queries can be answered, but the approach
+currently used does not fully utilize the query structure to execute optimally,
+and can be vastly improved on both, execution and solution quality.
 
 
 ** TODO Contribution
