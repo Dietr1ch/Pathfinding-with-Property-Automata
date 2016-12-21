@@ -342,6 +342,15 @@ RDF requires $3$ disjoint sets to exist, the /IRIs/ $\IRI$, the /Blank Nodes/ $\
  dereferenced. And finally /Literals/ are information by themselves, such as
  text or dates.
 
+#+LATEX: \begin{definition}[RDF sets]
+RDF relies on 3 disjoint sets
+\begin{itemize}
+\item[Identifiers] Identifiers, denoted by $\IRI$.
+\item[Blanks] Annonymous vertices to represent different /null values/, denoted by $\Blank$.
+\item[Literals] Text and other data, denoted by $\Lit$.
+\end{itemize}
+#+LATEX: \end{definition}
+
 #+LATEX: \begin{definition}[RDF triple]
 /RDF triples/ are triples $(s, p, o) \in (\IRI \cup \Blank) \times \IRI \times (\IRI \cup \Blank \cup \Lit)$,
 where $s$ is known as the /subject/, $p$ as the predicate, and $o$ as the
