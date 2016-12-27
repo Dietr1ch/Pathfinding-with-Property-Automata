@@ -328,6 +328,25 @@ information to be linked to the original source instead of being duplicated.
 ** The Semantic Web Graph
 
 The goal of the Semantic Web, is to build a
+Using RDF as building blocks, the /Semantic Web Graph/ $\SWG$ is a
+/self-labeled/, /edge-labeled graph/ that restricts labels to /IRIs/, and forces
+that /Literals/ must be /sinks/, or contain no outgoing edges.
+
+#+LATEX: \begin{definition}[Semantic Web Graph]
+Let $\IRI$, $\Blank$, and $\Lit$ be the disjoint sets used by /RDF/, and let $\RDF$ be
+their union.
+A /semantic web graph/ $\SWG$ is defined a /edge-labeled/ graph
+ $(\RDF, (\RDF \setminus \Lit) \times \RDF, e_\IRI)$.
+Note that while the graph is /self-labeled/, it's labels are chosen only from
+the IRI set $\IRI \subsetneq \RDF$. Also note that this graph can be described
+as a set of /RDF triples/.
+#+LATEX: \end{definition}
+
+Note that the real world graph, is a unique instance of $\SWG$, but the term will
+ be use indistinctly for both as only one instance is meant to exist.
+
+The SWG can be explored through /dereference/, which is the process of
+requesting the document associated with an IRI
 
 
 ** Search Problem.
