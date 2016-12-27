@@ -221,6 +221,17 @@ The chapter is as brief as possible, but it's accompanied by examples on the app
 
 
 ** Math
+*** Sequences
+A /Sequence/ from a set $X$ is an enumeration of elements from x possible having
+duplicates. The set of sequences from $X$ is denoted by $\Seq(X)$.
+
+The empty sequence is denoted by $\null_X$.
+Nonempty sequences can be decomposed into their first element, called the
+/head/, and the rest of the sequence, the /tail/.
+Sequences can also be extended by the /cons/ ($:$) operator, given a sequence
+$xs$, $[x:xs]$ is the sequence having the element $x$ as it's /head/ x, and the
+sequence $xs$ as it's tail.
+
 *** REVIEW Predicates
 		CLOSED: [2016-12-15 Thu 11:45]
 Intuitively, predicates are functions that filter or select elements from some
