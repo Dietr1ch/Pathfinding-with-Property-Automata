@@ -274,9 +274,10 @@ tuple $(V, E, v_{\Sigma}, e_{\Tau})$
 
 We say that a Labeled Graph is /self-labeled/ when $\Tau \subseteq V$.
 
-When $\Sigma$ or $\Tau$ are unused, simpler graphs result.
-We call  $\Gr^\Tau=\Gr_1^\Tau$    an /edge-labeled Graph/, and
-				 $\Gr_\Sigma=\Gr_\Sigma^1$ a /vertex-labeled Graph/.
+When label sets $\Sigma$ or $\Tau$ are omitted, we assume that the corresponding
+identity labeling, $id_V$ or $id_E$, is being used.
+We call  $\Gr^\Tau$ an /edge-labeled Graph/, and
+				 $\Gr_\Sigma$ a /vertex-labeled Graph/.
 #+LATEX: \end{definition}
 
 It's easy to find examples that use graphs, for example consider $V$ as a set of
