@@ -247,8 +247,8 @@ Intuitively, a Graph is a collection of objects with information about how those
 objects are related.
 
 #+LATEX: \begin{definition}[Graph]
-Given a set $V$, a /Graph/ is a pair /vertices/ and /edges/, $(V, E)$, where $E$
-is a collection of elements from $V^2$.
+Given a set $V$, a /Graph/ $\Gr$ is a pair /vertices/ and /edges/, $(V, E)$,
+where $E$ is a collection of elements from $V^2$.
 #+LATEX: \end{definition}
 $E$ is usually a set, but when it allows duplication, the /Graph/ is called a
 /Multi-Graph/ as multiple, distinguishable edges can join the same pair of vertices.
@@ -275,60 +275,22 @@ each relation from $E$, the edge label-set $\Tau$ can contain, for example,
 of each person, can be added by using $\Sigma=\Naturals$.
 
 
-** Automata
-An /Automaton/ is a Graph labeled with predicates over vertex and edge data
-extended to describe sequences.
 
-Automata are thought as representations of machines, so different terminology
-is used. Vertices are used to denote internal /States/ of a machine, and
-edges show which /Transitions/ of states are possible. Transitions require
-specific input to happen, which is specified by the label of each transition.
+#+LATEX: \begin{definition}[Paths]
+Given a Graph $\Gr$, and a /start vertex/ $v_0 \in \Gr_V$, a /path/ is a
+sequence over  $V \times {E \cup \varnothing}$ that describes a route from $v_0$
+to $v_n$ with every intermediate vertex and every edge used.
 
-The sequences described are the inputs used to transition from a fixed /initial
-state/ to some /final state/. Any sequence that allows reaching a final state
-after consuming all the input is considered /accepted/; hence, making the
-automaton a predicate for sequences of inputs. Note that this requires sequences
-to be finite, although it is possible to extend the notion to infinite
-sequences, it is not useful for most computations as executions must be finite.
+The set of /all paths/ starting from $v$ is,
+#+begin_export latex
+\begin{align*}
+paths(\Gr, v) = \set{(v_0, \varnothing) : \sum_i^n (v_i, e_i) \mid e_i \in
+\Gr_E, e_i=(v_{i-1}, v_i)}
+\end{align*}
+#+end_export
 
-Automata will be used to match paths in some graph $\Gr$, on $\Gr$ we might need
-to traverse edges on their intended direction, or in reverse. Considering this,
-we define /directed sets/, to allow the distinction.
-#+LATEX: \begin{definition}[Directed Set]
-Let $\Tau$ be any set, we define $\Tau^\pm$, the directed set of $\Tau$, as the
-union of $\set{\tau^+\mid \tau\in \Tau}$, and $\set{\tau^-\mid \tau\in \Tau}$.
+We use $paths(\Gr)$ to denote their union of the paths starting at any node.
 #+LATEX: \end{definition}
-
-#+LATEX: \begin{definition}[Automata]
-Let $G_\Pred{\Sigma}^\Pred{\Tau^\pm} = (V, E, v_\Pred{\Sigma}, e_\Pred{\Tau^\pm})$ be a
-labeled Graph, some $v_0 \in V$ the /initial vertex/, and $f\colon V \to \Booleans$ a
-predicate selecting /final states/.
-
-Let $\Tau^\pm$ be the union of $\set{\tau^+\mid \tau\in \Tau}$, and
-$\set{\tau^-\mid \tau\in \Tau}$.
-We define an Automaton $\A$ as the tuple $(G_\Pred{\Sigma}^\Pred{\Tau^\pm}, v_0,
-f)$, where $\Tau^\pm =  \set{\tau^+\mid \tau\in \Tau} \cup \set{\tau^-\mid \tau\in \Tau}$
-#+LATEX: \end{definition}
-
-#+LATEX: \begin{definition}[Automata execution]
-The automaton $\A$ is said to /accept/ some path in a graph $\Gr$ from some vertex
-$v\in \A_v$ and a node $n\in \Gr_v$, which is denoted by $accept(\A, \Gr, v, s)$
-if \textbf{any} of the following conditions is satisfied,
-\begin{itemize}
-\item $\A_f(s, q)$,\; the state \emph{accepts} the node.
-\item There exist some $(s,p,o) \in \Gr$, and $(v, v') \in \A_E$ satisfying \textbf{all} the following,
-\begin{itemize}
-\item $\A_e((v,v'), p)$,\; the edge $p$ is \emph{allowed} by the transition $(v, v')$,
-\item $\A_v(v', o)$,\; the vertex $o$ is \emph{allowed} by state $v'$,
-\item $accept(\A, \Gr, v', o)$,\; the resulting $(state, node)$ is \emph{accepted}.
-\end{itemize}
-\end{itemize}
-#+LATEX: \end{definition}
-
-Note that the classical definitions by \citeA{AutomataTheory} distinguish
-different kinds of machines. The relation between this Labeled Graph based
-definition and Non-deterministic finite automaton is discussed on the appendix.
-
 
 ** Resource Description Framework
 The Resource Description Framework, /RDF/, is the building block of the
@@ -374,11 +336,83 @@ Lorem ipsum.
 # http://stackoverflow.com/questions/29470253/astar-explanation-of-name
 
 
-* Property Automata
-On this chapter we will develop a finite-state machine to accept or reject a labeled path.
-** Definition.
-*** TODO Property Automata
-A /Property Automata/ is an /Automata/ enhanced with additional
+* Automata
+
+On graphs, edges are used to describe relations between data.
+Paths in the graph join relations, forming new, richer relations between data.
+This makes finding paths interesting to query graphs using a broader relation
+set than the explicitly available.
+
+Before finding such paths, a formal way to describe them is required, which is
+the focus of this chapter.
+
+Currently /Property Path Expressions/ (/PPE/) can be used to describe paths, but
+to efficiently use /PPE/ some transformations are required.
+The result of those transformations is known as /Property Automata/.
+
+On this chapter we will develop a slightly more expressive /Automata/, which
+enhances filtering capabilities of /Property Automata/ as it considers objects
+in addition to relations.
+
+# The resulting /Automata/ generalizes /Property Automata/ and also other
+# /Automata/ like /Non-deterministic finite automata/, this is why no attempt to
+# establish an special name is made.
+
+
+** Automata
+
+An /Automaton/ is a graph labeled with predicates used to describe paths in
+another labeled graph.
+
+# Directed sets
+Relations on $\Gr$ may only be stated in their dual form, as /employee/ instead of
+/employer/.
+To enable the use of relations in their given order or in reverse we define
+/directed sets/, to allow specifying direction.
+#+LATEX: \begin{definition}[Directed Set]
+Given some set $\Tau$, we define $\Tau^\pm$, the directed set of $\Tau$, as the
+union of\nbsp{}$\Tau^+=\set{\tau^+\mid \tau\in \Tau}$
+and\nbsp{}$\Tau^-=\set{\tau^-\mid \tau\in \Tau}$.
+#+LATEX: \end{definition}
+
+
+Classical definition of /Automata/ is made as a representation of machines,
+which led to different terminology.
+An Automaton is a machine that has a set of possible internal /states/ and can
+/transition/ between different states after processing some input.
+Therefore, vertices and edges are referred as /States/ and /Transitions/
+respectively.
+# States are denoted by Q, following Turing's notation reinforcing that states are
+# discrete (Quanta).
+
+#+LATEX: \begin{definition}[Automata]
+Let $G_\Pred{\Sigma}^\Pred{\Tau^\pm} = (Q, T, q_\Pred{\Sigma}, t_\Pred{\Tau^\pm})$ be a
+labeled Graph, some $q_0 \in Q$ the /initial state/, and $f\colon Q \to \Booleans$ a
+predicate selecting /final states/.
+
+We define an Automaton $\A$ as the tuple $(G_\Pred{\Sigma}^\Pred{\Tau^\pm}, v_0, f)$.
+#+LATEX: \end{definition}
+
+#+LATEX: \begin{definition}[Automata execution]
+The automaton $\A$ is said to /accept/ some path in a graph $\Gr$ from some vertex
+$v\in \A_v$ and a node $n\in \Gr_v$, which is denoted by $accept(\A, \Gr, v, s)$
+if \textbf{any} of the following conditions is satisfied,
+\begin{itemize}
+\item $\A_f(s, q)$,\; the state \emph{accepts} the node.
+\item There exist some $(s,p,o) \in \Gr$, and $(v, v') \in \A_E$ satisfying \textbf{all} the following,
+\begin{itemize}
+\item $\A_e((v,v'), p)$,\; the edge $p$ is \emph{allowed} by the transition $(v, v')$,
+\item $\A_v(v', o)$,\; the vertex $o$ is \emph{allowed} by state $v'$,
+\item $accept(\A, \Gr, v', o)$,\; the resulting $(state, node)$ is \emph{accepted}.
+\end{itemize}
+\end{itemize}
+#+LATEX: \end{definition}
+
+Note that the classical definitions by \citeA{AutomataTheory} distinguish
+different kinds of machines. The relation between this Labeled Graph based
+definition and Non-deterministic finite automaton is discussed on the appendix.
+
+
 
 ** Induced Heuristic.
 *** TODO Computing the Heuristic
