@@ -269,51 +269,50 @@ objects are related.
 #+LATEX: \begin{definition}[Graph]
 Given a set $V$, a /Graph/ $\Gr$ is a pair /vertices/ and /edges/, $(V, E)$,
 where $E$ is a collection of elements from $V^2$.
-# that possibly holds duplicates,
-# but allows distinguishable elements.
-#+LATEX: \end{definition}
+
 $E$ is usually a set, but when it allows duplication, the /Graph/ is called a
 /Multi-Graph/ as multiple, distinguishable edges can join the same pair of vertices.
 
-
-The data can be added to the graph in form of labels.
-#+LATEX: \begin{definition}[Labeled Graph]
-Given a graph $(V, E)$ and functions $v_{\Sigma}\colon V \to \Sigma$ and
-$e_{\Tau}\colon E \to \Tau$ assigning Labels from $\Sigma$ and $\Tau$ to vertices
-and edges respectively, we define a /Labeled Graph/ $\LG$ is the
-tuple $(V, E, v_{\Sigma}, e_{\Tau})$
-
-We say that a Labeled Graph is /self-labeled/ when $\Tau \subseteq V$.
-
-When label sets $\Sigma$ or $\Tau$ are omitted, we assume that the corresponding
-identity labeling is being used.
-We call  $\Gr^\Tau$ an /edge-labeled Graph/, and
-				 $\Gr_\Sigma$ a /vertex-labeled Graph/.
-#+LATEX: \end{definition}
-
-To quickly refer to labels in a graph, we use the /triple notation/.
-We say that $(\sigma_u, \tau, \sigma_v) \in \LG$ if there is an edge $e=(u, v)$
-in the graph such that $\sigma_u, \sigma_v \in \Sigma$ are the labels for $u$
-and $v$ respectively.
-
-It's easy to find examples that use graphs, for example consider $V$ as a set of
-people, and $E$ as arcs that depict relations between the people. To explain
-each relation from $E$, the edge label-set $\Tau$ can contain, for example,
-/friends/, /best-friends/, /ex-girlfriend/ can be used, also, data, like the age
-of each person, can be added by using $\Sigma=\Naturals$.
-
-
-
 #+LATEX: \begin{definition}[Paths]
-Given a Graph $\Gr$, a /path/ is a sequence over  $E$ that describes a route
+Given a Graph $\Gr$, a /path/ is a sequence over $E$ that describes a route
 through the graph.
 The set of /paths/ is defined as
 #+begin_export latex
 \begin{align*}
-paths(\Gr) = \set{\pi \in \Seq{E} \mid \forall\ i\geq 0\; snd(\pi_i)=fst(\pi_{i+1})}
+paths(\Gr) = \set{\pi \in \Seq{E} \mid \forall i\ snd(\pi_i)=fst(\pi_{i+1})}
 \end{align*}
 #+end_export
 #+LATEX: \end{definition}
+
+
+The data can be added to the graph in form of labels.
+#+LATEX: \begin{definition}[Labeled Graph]
+Given a graph $(V, E)$ and functions $v_{\VL}\colon V \to \VL$ and
+$e_{\EL}\colon E \to \EL$ assigning Labels from $\VL$ and $\EL$ to vertices
+and edges respectively, we define a /Labeled Graph/ $\LG$ is the
+tuple $(V, E, v_{\VL}, e_{\EL})$
+
+We say that a Labeled Graph is /self-labeled/ when $\EL \subseteq V$.
+
+When label sets $\VL$ or $\EL$ are omitted, we assume that the corresponding
+identity labeling is being used.
+We call
+$\Gr^\EL$ an /edge-labeled Graph/, and
+$\Gr_\VL$ a /vertex-labeled Graph/.
+#+LATEX: \end{definition}
+
+To quickly refer to labels in a graph, we use the /triple notation/.
+We say that $(\vl_u, \tau, \vl_v) \in \LG$ if there is an edge $e=(u, v)$
+in the graph such that $\vl_u, \vl_v \in \VL$ are the labels for $u$
+and $v$ respectively.
+
+It's easy to find examples that use graphs, for example consider $V$ as a set of
+people, and $E$ as arcs that depict relations between the people. To explain
+each relation from $E$, the edge label-set $\EL$ can contain, for example,
+/friends/, /best-friends/, /ex-girlfriend/ can be used, also, data, like the age
+of each person, can be added by using $\VL=\Naturals$.
+
+
 
 ** Resource Description Framework
 The Resource Description Framework, /RDF/, is the building block of the
@@ -412,9 +411,9 @@ Relations on $\Gr$ may only be stated in their dual form, as /employee/ instead 
 To enable the use of relations in their given order or in reverse we define
 /directed sets/, to allow specifying direction.
 #+LATEX: \begin{definition}[Directed Set]
-Given some set $\Tau$, we define $\Tau^\pm$, the directed set of $\Tau$, as the
-union of\nbsp{}$\Tau^+=\set{\tau^+\mid \tau\in \Tau}$
-and\nbsp{}$\Tau^-=\set{\tau^-\mid \tau\in \Tau}$.
+Given some set $X$, we define $X^\pm$, the directed set of $X$, as the
+union of\nbsp{}$X^+=\set{x^+\mid x\in X}$
+and\nbsp{}$X^-=\set{x^-\mid x\in X}$.
 #+LATEX: \end{definition}
 
 
