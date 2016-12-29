@@ -452,18 +452,18 @@ if \textbf{any} of the following conditions is satisfied,
 
 Note that the classical definitions by \citeA{AutomataTheory} distinguish
 different kinds of machines. The relation between this Labeled Graph based
-definition and Non-deterministic finite automaton is discussed on the appendix.
+definition and previous notions of automata is discussed on the appendix.
 
 
-
-** Induced Heuristic.
-*** TODO Computing the Heuristic
-*** TODO Consistency.
 * Search with Property Automata
 ** Definition.
 *** TODO Search algorithm.
 *** TODO Definition as a Distributed Algorithm.
-  - Advantages over single threaded formulation.
+	- Advantages over single threaded formulation.
+** Induced Heuristic.
+*** TODO Computing the Heuristic
+
+*** TODO Consistency.
 ** TODO Multi-point search.
   - Filter invertibility.
 ** Remarks
