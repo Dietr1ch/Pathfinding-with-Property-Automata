@@ -272,6 +272,13 @@ where $E$ is a collection of elements from $V^2$.
 
 $E$ is usually a set, but when it allows duplication, the /Graph/ is called a
 /Multi-Graph/ as multiple, distinguishable edges can join the same pair of vertices.
+#+LATEX: \end{definition}
+# #+LATEX: \begin{remark}[Distinguishable edges]
+# Note that two edges starting and ending on the same vertices are the same pair
+# on $V^2$, to really distinguish them, a unique identifier must be used, so
+# instead of pairs, actually triples are used, where the $3^{rd}$ element is a
+# unique, implicit identifier that will be omitted.
+# #+LATEX: \end{remark}
 
 #+LATEX: \begin{definition}[Paths]
 Given a Graph $\Gr$, a /path/ is a sequence over $E$ that describes a route
@@ -428,10 +435,10 @@ respectively.
 
 #+LATEX: \begin{definition}[Automata]
 Let $G_\Pred{\Sigma}^\Pred{\Tau^\pm} = (Q, T, q_\Pred{\Sigma}, t_\Pred{\Tau^\pm})$ be a
-labeled Graph, some $q_0 \in Q$ the /initial state/, and $f\colon Q \to \Booleans$ a
+labeled Graph, $q_0 \in Q$ the /initial state/, and $f\colon Q \to \Booleans$ a
 predicate selecting /final states/.
 
-We define an Automaton $\A$ as the tuple $(G_\Pred{\Sigma}^\Pred{\Tau^\pm}, v_0, f)$.
+We define an Automaton $\A_\Sigma^\Tau$ as the tuple $(G_\Pred{\Sigma}^\Pred{\Tau^\pm}, v_0, f)$.
 #+LATEX: \end{definition}
 
 #+LATEX: \begin{definition}[Automata execution]
