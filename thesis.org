@@ -221,19 +221,28 @@ The chapter is as brief as possible, but it's accompanied by examples on the app
 
 
 ** Math
-*** Sequences
-A /Sequence/ from a set $X$ is an enumeration of elements from x possible having
-duplicates. The set of sequences from $X$ is denoted by $\Seq(X)$.
+*** REVIEW Tuples
+		CLOSED: [2016-12-29 Thu 01:34]
+A /tuple/ is an ordered collection of elements, usually tuples are finite and they
+are denoted simply by listing the elements in parenthesis.
 
-The empty sequence is denoted by $\null_X$.
-Nonempty sequences can be decomposed into their first element, called the
-/head/, and the rest of the sequence, the /tail/.
-Sequences can also be extended by the /cons/ ($:$) operator, given a sequence
-$xs$, $[x:xs]$ is the sequence having the element $x$ as it's /head/ x, and the
-sequence $xs$ as it's tail.
+Members can be accessed from their /index/, for example,
+$index((a,b,c), 1)=b$.
+Usually, $fst$ and $snd$ are used for elements 0 and 1.
+# At least on Haskell :P
+
+# Also, $head$ and $tail$ exists, $head$ is simply another name for $fst$, but
+# $tail$ is not a member, but the tuple without it's first element.
+
+*** REVIEW Sequences
+		CLOSED: [2016-12-29 Thu 01:34]
+A /Sequence/ of type $X$ is a tuple where every element comes from a common set $X$.
+The set of sequences from $X$ is denoted by $\Seq{X}$.
+
+The empty sequence is denoted by $\varnothing_X$.
 
 *** REVIEW Predicates
-		CLOSED: [2016-12-15 Thu 11:45]
+		CLOSED: [2016-12-29 Thu 01:34]
 Intuitively, predicates are functions that filter or select elements from some
 collection.
 
@@ -260,6 +269,8 @@ objects are related.
 #+LATEX: \begin{definition}[Graph]
 Given a set $V$, a /Graph/ $\Gr$ is a pair /vertices/ and /edges/, $(V, E)$,
 where $E$ is a collection of elements from $V^2$.
+# that possibly holds duplicates,
+# but allows distinguishable elements.
 #+LATEX: \end{definition}
 $E$ is usually a set, but when it allows duplication, the /Graph/ is called a
 /Multi-Graph/ as multiple, distinguishable edges can join the same pair of vertices.
@@ -275,10 +286,15 @@ tuple $(V, E, v_{\Sigma}, e_{\Tau})$
 We say that a Labeled Graph is /self-labeled/ when $\Tau \subseteq V$.
 
 When label sets $\Sigma$ or $\Tau$ are omitted, we assume that the corresponding
-identity labeling, $id_V$ or $id_E$, is being used.
+identity labeling is being used.
 We call  $\Gr^\Tau$ an /edge-labeled Graph/, and
 				 $\Gr_\Sigma$ a /vertex-labeled Graph/.
 #+LATEX: \end{definition}
+
+To quickly refer to labels in a graph, we use the /triple notation/.
+We say that $(\sigma_u, \tau, \sigma_v) \in \LG$ if there is an edge $e=(u, v)$
+in the graph such that $\sigma_u, \sigma_v \in \Sigma$ are the labels for $u$
+and $v$ respectively.
 
 It's easy to find examples that use graphs, for example consider $V$ as a set of
 people, and $E$ as arcs that depict relations between the people. To explain
@@ -289,19 +305,14 @@ of each person, can be added by using $\Sigma=\Naturals$.
 
 
 #+LATEX: \begin{definition}[Paths]
-Given a Graph $\Gr$, and a /start vertex/ $v_0 \in \Gr_V$, a /path/ is a
-sequence over  $V \times {E \cup \varnothing}$ that describes a route from $v_0$
-to $v_n$ with every intermediate vertex and every edge used.
-
-The set of /all paths/ starting from $v$ is,
+Given a Graph $\Gr$, a /path/ is a sequence over  $E$ that describes a route
+through the graph.
+The set of /paths/ is defined as
 #+begin_export latex
 \begin{align*}
-paths(\Gr, v) = \set{(v_0, \varnothing) : \sum_i^n (v_i, e_i) \mid e_i \in
-\Gr_E, e_i=(v_{i-1}, v_i)}
+paths(\Gr) = \set{\pi \in \Seq{E} \mid \forall\ i\geq 0\; snd(\pi_i)=fst(\pi_{i+1})}
 \end{align*}
 #+end_export
-
-We use $paths(\Gr)$ to denote their union of the paths starting at any node.
 #+LATEX: \end{definition}
 
 ** Resource Description Framework
