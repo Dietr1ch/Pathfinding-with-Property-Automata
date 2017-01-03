@@ -461,15 +461,12 @@ We define an Automaton $\A_\Sigma^\Tau$ as the tuple $(G_\Pred{\Sigma}^\Pred{\Ta
 The automaton $\A$ is said to /accept/ some path in a graph $\Gr$ from some vertex
 $v\in \A_v$ and a node $n\in \Gr_v$, which is denoted by $accept(\A, \Gr, v, s)$
 if \textbf{any} of the following conditions is satisfied,
-\begin{itemize}
-\item $\A_f(s, q)$,\; the state \emph{accepts} the node.
-\item There exist some $(s,p,o) \in \Gr$, and $(v, v') \in \A_E$ satisfying \textbf{all} the following,
-\begin{itemize}
-\item $\A_e((v,v'), p)$,\; the edge $p$ is \emph{allowed} by the transition $(v, v')$,
-\item $\A_v(v', o)$,\; the vertex $o$ is \emph{allowed} by state $v'$,
-\item $accept(\A, \Gr, v', o)$,\; the resulting $(state, node)$ is \emph{accepted}.
-\end{itemize}
-\end{itemize}
+
+	- $\A_f(s, q)$, the state \emph{accepts} the node.
+	- There exist some $(s,p,o) \in \Gr$, and $(v, v') \in \A_E$ satisfying \textbf{all} the following,
+		- $\A_e((v,v'), p)$, the edge $p$ is \emph{allowed} by the transition $(v, v')$,
+		- $\A_v(v', o)$, the vertex $o$ is \emph{allowed} by state $v'$,
+		- $accept(\A, \Gr, v', o)$, the resulting $(state, node)$ is \emph{accepted}.
 #+LATEX: \end{definition}
 
 Note that the classical definitions by \citeA{AutomataTheory} distinguish
