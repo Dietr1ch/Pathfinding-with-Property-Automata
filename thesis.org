@@ -239,7 +239,7 @@ Usually, $fst$ and $snd$ are used for elements 0 and 1.
 A /Sequence/ of type $X$ is a tuple where every element comes from a common set $X$.
 The set of sequences from $X$ is denoted by $\Seq{X}$.
 
-The empty sequence is denoted by $\varnothing_X$.
+# The empty sequence is denoted by $\varnothing_X$.
 
 *** REVIEW Predicates
 		CLOSED: [2016-12-29 Thu 01:34]
@@ -271,7 +271,8 @@ Given a set $V$, a /Graph/ $\Gr$ is a pair /vertices/ and /edges/, $(V, E)$,
 where $E$ is a collection of elements from $V^2$.
 
 $E$ is usually a set, but when it allows duplication, the /Graph/ is called a
-/Multi-Graph/ as multiple, distinguishable edges can join the same pair of vertices.
+/Multi-Graph/ as multiple, distinguishable edges can join the same pair of
+vertices.
 #+LATEX: \end{definition}
 # #+LATEX: \begin{remark}[Distinguishable edges]
 # Note that two edges starting and ending on the same vertices are the same pair
@@ -308,10 +309,6 @@ $\Gr^\EL$ an /edge-labeled Graph/, and
 $\Gr_\VL$ a /vertex-labeled Graph/.
 #+LATEX: \end{definition}
 
-To quickly refer to labels in a graph, we use the /triple notation/.
-We say that $(\vl_u, \tau, \vl_v) \in \LG$ if there is an edge $e=(u, v)$
-in the graph such that $\vl_u, \vl_v \in \VL$ are the labels for $u$
-and $v$ respectively.
 
 It's easy to find examples that use graphs, for example consider $V$ as a set of
 people, and $E$ as arcs that depict relations between the people. To explain
@@ -320,39 +317,60 @@ each relation from $E$, the edge label-set $\EL$ can contain, for example,
 of each person, can be added by using $\VL=\Naturals$.
 
 
+#+LATEX: \begin{definition}[Normal labeling]
+When all vertices have different labels, we say that the graph has a
+/vertex-normal labeling/.
+Similarly, when all edges connecting the same pair have different labels, we say
+that the graph has an /edge-normal labeling/.
+#+LATEX: \end{definition}
+
+The first property trivially holds when $id_V$ is used to label vertices.
+
+The latter property is common as there is no need to have repeated labels.
+Label repetition between the same pair can be encoded in the label and produce a
+more sparse representation.
+Also, on some contexts repetition is just a restatement of information
+rather than new information, so repetition can be ignored.
+
+#+LATEX: \begin{definition}[Tuple notation]
+To quickly refer to labels in a graph, we use the /tuple notation/.
+We say that $((u, \vl_u), (e, \tau), (v, \vl_v)) \in \LG$ if there is an edge
+$e=(u, v) \in \LG$ having labels $(u, \vl_u)$ and $(v, \vl_v)$.
+Irrelevant information can be omitted on certain situations, like vertices or
+edges on /normal-labeled/ graphs, or vertices when it suffices to mention the
+edge. When omitting information no ambiguity should arise.
+#+LATEX: \end{definition}
+
+
 
 ** Resource Description Framework
 The Resource Description Framework, /RDF/, is the building block of the
 /Semantic Web/. It standardizes how to publish pieces of a universal graph where
 anyone can share and consume data.
 
-RDF requires $3$ disjoint sets to exist, the /IRIs/ $\IRI$, the /Blank Nodes/ $\Blank$,
- and the /Literals/ $\Lit$.
-/IRIs/ are special, as they allow to retrieve information from the web by dereferencing. /Blank
- Nodes/ serve as anonymous /IRIs/ that join information, but cannot be
- dereferenced. And finally /Literals/ are information by themselves, such as
- text or dates.
-
 #+LATEX: \begin{definition}[RDF sets]
 RDF relies on 3 disjoint sets
-\begin{itemize}
-\item[Identifiers] Identifiers, denoted by $\IRI$.
-\item[Blanks] Annonymous vertices to represent different /null values/, denoted by $\Blank$.
-\item[Literals] Text and other data, denoted by $\Lit$.
-\end{itemize}
+	- IRIs :: /Internationalized Resource Identifiers/, denoted by $\IRI$.
+	- Blanks :: Annonymous vertices to represent different \emph{null values}, denoted by $\Blank$.
+	- Literals :: Text and other data, denoted by $\Lit$.
+
+/IRIs/ are special as they allow to retrieve information from the web by /dereferencing/
 #+LATEX: \end{definition}
 
-#+LATEX: \begin{definition}[RDF triple]
-/RDF triples/ are triples $(s, p, o) \in (\IRI \cup \Blank) \times \IRI \times (\IRI \cup \Blank \cup \Lit)$,
-where $s$ is known as the /subject/, $p$ as the predicate, and $o$ as the
-/object/.
-#+LATEX: \end{definition}
-An RDF Triple states that the predicate $p$ holds for the pair of vertices $(s,
-o)$ on the graph. Note that predicates *must* be /IRIs/, this is key to
-encourage the use of a common vocabulary among all publishers of RDF Triples,
-also subjects and objects can be data from different servers, allowing
-information to be linked to the original source instead of being duplicated.
+#+LATEX: \begin{definition}[RDF graph]
+Using the /RDF sets/ a labeled graph is built. An /RDF graph/ is a /labeled graph/
+having some additional restrictions.
 
+	- Vertex are taken from all $3$ \emph{RDF sets}, $V \subset \IRI \cup \Blank \cup \Lit$.
+	- Edges cannot start at a blank node, so they are restricted from $V^2$ to $(V\setminus \Blank) \times V$.
+	- Vertices use the identity labeling, so the graph /vertex-normal/.
+	- Edges only use /IRIs/ as labels, so $\EL = \IRI$.
+			As $\EL \subset V$, the graph is /self-labeled/.
+	- The graph is considered to be /edge-normal/.
+#+LATEX: \end{definition}
+
+The use of a common set of /IRIs/ for vertices and labels is encouraged as it
+allows joining information from multiple publishers.
 
 ** The Semantic Web Graph
 
@@ -371,11 +389,17 @@ the IRI set $\IRI \subsetneq \RDF$. Also note that this graph can be described
 as a set of /RDF triples/.
 #+LATEX: \end{definition}
 
-Note that the real world graph, is a unique instance of $\SWG$, but the term will
- be use indistinctly for both as only one instance is meant to exist.
+** The Semantic Web Graph
 
-The SWG can be explored through /dereference/, which is the process of
-requesting the document associated with an IRI
+The /Semantic Web Graph/ (SWG) is the /RDF graph/ made of all /RDF triples/
+published on the Web and is denoted by $\SWG$.
+
+The SWG can be explored by /dereferencing/ IRIs.
+Dereference requests a /document/ containing relevant /RDF triples/ to a web
+server.
+When dereferencing an IRI $i$, servers return triples where $i$ is either the
+/subject/ or the /object/ of the triple, those are known as /forward triples/
+and /backward triples/ respectively.
 
 
 ** Search Problem.
