@@ -372,21 +372,13 @@ having some additional restrictions.
 The use of a common set of /IRIs/ for vertices and labels is encouraged as it
 allows joining information from multiple publishers.
 
-** The Semantic Web Graph
+#+LATEX: \begin{definition}[RDF triple]
+/RDF triples/ are the building blocks of information in /RDF/.
+They are triples $(s, p, o) \in (\IRI \cup \Blank) \times \IRI \times (\IRI \cup \Blank \cup \Lit)$,
+and they denote that the /predicate/ $p$ holds for the /subject/ $s$ and
+/object/ $o$ on the graph.
 
-The goal of the Semantic Web, is to build a
-Using RDF as building blocks, the /Semantic Web Graph/ $\SWG$ is a
-/self-labeled/, /edge-labeled graph/ that restricts labels to /IRIs/, and forces
-that /Literals/ must be /sinks/, or contain no outgoing edges.
-
-#+LATEX: \begin{definition}[Semantic Web Graph]
-Let $\IRI$, $\Blank$, and $\Lit$ be the disjoint sets used by /RDF/, and let $\RDF$ be
-their union.
-A /semantic web graph/ $\SWG$ is defined a /edge-labeled/ graph
- $(\RDF, (\RDF \setminus \Lit) \times \RDF, e_\IRI)$.
-Note that while the graph is /self-labeled/, it's labels are chosen only from
-the IRI set $\IRI \subsetneq \RDF$. Also note that this graph can be described
-as a set of /RDF triples/.
+Note that RDF triples are just simplified tuple notation for an /RDF Graph/.
 #+LATEX: \end{definition}
 
 ** The Semantic Web Graph
