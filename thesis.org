@@ -209,9 +209,7 @@ Heuristic Search.
 
 
 * Preliminaries
-#+begin_export latex
-\label{sec:Preliminaries}
-#+end_export
+#+LATEX: \label{sec:Preliminaries}
 
 This chapter serves as a common basis for the following work. Definitions given
 are slightly different and more general than the usual ones, all in order to
@@ -852,7 +850,7 @@ select * where {
 		\includegraphics[width=.32\linewidth]{./figures/experiments/q10-Publications/p40/quick/memory-remote_expansions.pdf}
 	\end{subfigure}%
 	\caption{q10-Publications}
-	\label{fig:LABEL}
+	\label{fig:exps-q10}
 \end{figure*}
 
 
@@ -923,7 +921,7 @@ select * where {
 		\includegraphics[width=.32\linewidth]{./figures/experiments/q11-Journals/p40/quick/memory-remote_expansions.pdf}
 	\end{subfigure}%
 	\caption{q11-Journals}
-	\label{fig:LABEL}
+	\label{fig:exps-q11}
 \end{figure*}
 
 
@@ -994,7 +992,7 @@ select * where {
 		\includegraphics[width=.32\linewidth]{./figures/experiments/q12-Conferences/p40/quick/memory-remote_expansions.pdf}
 	\end{subfigure}%
 	\caption{q12-Conferences}
-	\label{fig:LABEL}
+	\label{fig:exps-q12}
 \end{figure*}
 
 
@@ -1065,7 +1063,7 @@ select * where {
 		\includegraphics[width=.32\linewidth]{./figures/experiments/q13-Direct_Coauthors/p40/quick/memory-remote_expansions.pdf}
 	\end{subfigure}%
 	\caption{q13-Direct\_Coauthors}
-	\label{fig:LABEL}
+	\label{fig:exps-q13}
 \end{figure*}
 
 
@@ -1136,7 +1134,7 @@ select * where {
 		\includegraphics[width=.32\linewidth]{./figures/experiments/q14-CoauthorStar_IRI/p40/quick/memory-remote_expansions.pdf}
 	\end{subfigure}%
 	\caption{q14-CoauthorStar\_IRI}
-	\label{fig:LABEL}
+	\label{fig:exps-q14}
 \end{figure*}
 
 
@@ -1207,7 +1205,7 @@ select * where {
 		\includegraphics[width=.32\linewidth]{./figures/experiments/q15-CoauthorStar/p40/quick/memory-remote_expansions.pdf}
 	\end{subfigure}%
 	\caption{q15-CoauthorStar}
-	\label{fig:LABEL}
+	\label{fig:exps-q15}
 \end{figure*}
 
 
@@ -1278,7 +1276,7 @@ select * where {
 		\includegraphics[width=.32\linewidth]{./figures/experiments/q20-CoactorStar__DBPEDIA/p40/quick/memory-remote_expansions.pdf}
 	\end{subfigure}%
 	\caption{q20-CoactorStar--DBPEDIA}
-	\label{fig:LABEL}
+	\label{fig:exps-q20}
 \end{figure*}
 
 
@@ -1349,7 +1347,7 @@ select * where {
 		\includegraphics[width=.32\linewidth]{./figures/experiments/q22-CoactorStar_IRI__YAGO/p40/quick/memory-remote_expansions.pdf}
 	\end{subfigure}%
 	\caption{q22-CoactorStar\_IRI--YAGO}
-	\label{fig:LABEL}
+	\label{fig:exps-q22}
 \end{figure*}
 
 
@@ -1420,7 +1418,7 @@ select * where {
 		\includegraphics[width=.32\linewidth]{./figures/experiments/q23-CoactorStar__ANY/p40/quick/memory-remote_expansions.pdf}
 	\end{subfigure}%
 	\caption{q23-CoactorStar--ANY}
-	\label{fig:LABEL}
+	\label{fig:exps-q23}
 \end{figure*}
 
 
@@ -1491,7 +1489,7 @@ select * where {
 		\includegraphics[width=.32\linewidth]{./figures/experiments/q30-NATO_Business/p40/quick/memory-remote_expansions.pdf}
 	\end{subfigure}%
 	\caption{q30-NATO\_Business}
-	\label{fig:LABEL}
+	\label{fig:exps-q30}
 \end{figure*}
 
 
@@ -1562,7 +1560,7 @@ select * where {
 		\includegraphics[width=.32\linewidth]{./figures/experiments/q32-AirportsInNetherlands/p40/quick/memory-remote_expansions.pdf}
 	\end{subfigure}%
 	\caption{q32-AirportsInNetherlands}
-	\label{fig:LABEL}
+	\label{fig:exps-q32}
 \end{figure*}
 #+end_export
 
