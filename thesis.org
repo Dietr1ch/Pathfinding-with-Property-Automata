@@ -220,20 +220,15 @@ The chapter is as brief as possible, but it's accompanied by examples on the app
 
 ** Math
 *** REVIEW Tuples
-		CLOSED: [2016-12-29 Thu 01:34]
+		CLOSED: [2017-01-04 Wed 17:41]
 A /tuple/ is an ordered collection of elements, usually tuples are finite and they
 are denoted simply by listing the elements in parenthesis.
 
-Members can be accessed from their /index/, for example,
-$index((a,b,c), 1)=b$.
-Usually, $fst$ and $snd$ are used for elements 0 and 1.
-# At least on Haskell :P
-
-# Also, $head$ and $tail$ exists, $head$ is simply another name for $fst$, but
-# $tail$ is not a member, but the tuple without it's first element.
+Members are accessed using subscripts as their 0-based index, e.g,
+ $(a,b,c, d)_2=c$.
 
 *** REVIEW Sequences
-		CLOSED: [2016-12-29 Thu 01:34]
+		CLOSED: [2017-01-04 Wed 17:41]
 A /Sequence/ of type $X$ is a tuple where every element comes from a common set $X$.
 The set of sequences from $X$ is denoted by $\Seq{X}$.
 
@@ -247,7 +242,7 @@ collection.
 #+LATEX: \begin{definition}[Predicate]
 /Predicates/ are functions mapping some space $X$ into the /Booleans/, which is
 the set\nbsp{}$\Booleans = \set{ \top, \bot }$.
-The set of all predicates over $X$ is denoted by $\Pred{X}$.
+The set of predicates over $X$ is denoted by $\Pred{X}$.
 #+LATEX: \end{definition}
 
 When some element is mapped to $\top$, we say that it is /accepted/ by the predicate.
@@ -259,7 +254,7 @@ We say that $P$ is /finitely invertible/ when $P^{-1}$ is finite, and call $P$
 As a notation abuse, we allow to cast subsets $Y \subset X$ to a predicate over $X$
 that only accepts the elements of $Y$.
 
-*** REVIEW Graphs
+*** DONE Graphs
 		CLOSED: [2016-12-15 Thu 11:45]
 Intuitively, a Graph is a collection of objects with information about how those
 objects are related.
@@ -285,7 +280,7 @@ through the graph.
 The set of /paths/ is defined as
 #+begin_export latex
 \begin{align*}
-paths(\Gr) = \set{\pi \in \Seq{E} \mid \forall i\ snd(\pi_i)=fst(\pi_{i+1})}
+paths(\Gr) = \set{\pi \in \Seq{E} \mid \forall i\ (\pi_i)_1=(\pi_{i+1})_0}
 \end{align*}
 #+end_export
 #+LATEX: \end{definition}
@@ -293,18 +288,18 @@ paths(\Gr) = \set{\pi \in \Seq{E} \mid \forall i\ snd(\pi_i)=fst(\pi_{i+1})}
 
 The data can be added to the graph in form of labels.
 #+LATEX: \begin{definition}[Labeled Graph]
-Given a graph $(V, E)$ and functions $v_{\VL}\colon V \to \VL$ and
-$e_{\EL}\colon E \to \EL$ assigning Labels from $\VL$ and $\EL$ to vertices
+Given a graph $(V, E)$ and functions $\vl\colon V \to \VL$ and
+$\el\colon E \to \EL$ assigning Labels from sets $\VL$ and $\EL$ to vertices
 and edges respectively, we define a /Labeled Graph/ $\LG$ is the
-tuple $(V, E, v_{\VL}, e_{\EL})$
+tuple $(V, E, \vl, \el)$
 
-We say that a Labeled Graph is /self-labeled/ when $\EL \subseteq V$.
-
-When label sets $\VL$ or $\EL$ are omitted, we assume that the corresponding
-identity labeling is being used.
+Label sets $\VL$ and $\EL$ can be omitted, and the corresponding identity
+labeling, $id_V$ or $id_E$ is assumed.
 We call
 $\Gr^\EL$ an /edge-labeled Graph/, and
 $\Gr_\VL$ a /vertex-labeled Graph/.
+
+We say that a Labeled Graph is /self-labeled/ when $\EL \subseteq V$.
 #+LATEX: \end{definition}
 
 
@@ -330,15 +325,14 @@ more sparse representation.
 Also, on some contexts repetition is just a restatement of information
 rather than new information, so repetition can be ignored.
 
-#+LATEX: \begin{definition}[Tuple notation]
-To quickly refer to labels in a graph, we use the /tuple notation/.
-We say that $((u, \vl_u), (e, \tau), (v, \vl_v)) \in \LG$ if there is an edge
-$e=(u, v) \in \LG$ having labels $(u, \vl_u)$ and $(v, \vl_v)$.
-Irrelevant information can be omitted on certain situations, like vertices or
-edges on /normal-labeled/ graphs, or vertices when it suffices to mention the
-edge. When omitting information no ambiguity should arise.
-#+LATEX: \end{definition}
-
+# To quickly refer to labels in a graph, we use the /tuple notation/.
+We say that $((u, l_u), (e, l_e), (v, l_v))$ /is in/  $\LG$ if the graph has an
+edge $e$ from $u$ to $v$, and their labels are $l_e$, $l_u$, and $l_v$
+respectively.
+When using this tuple notation, irrelevant information can be omitted, like
+vertices or edges on /normal-labeled/ graphs, or vertices when it suffices to
+mention the edge.
+No ambiguity should arise by omitting information.
 
 
 ** Resource Description Framework
@@ -348,25 +342,25 @@ anyone can share and consume data.
 
 #+LATEX: \begin{definition}[RDF sets]
 RDF relies on 3 disjoint sets
-	- IRIs :: /Internationalized Resource Identifiers/, denoted by $\IRI$.
-	- Blanks :: Annonymous vertices to represent different \emph{null values}, denoted by $\Blank$.
-	- Literals :: Text and other data, denoted by $\Lit$.
+	- $\IRI$ :: /Internationalized Resource Identifiers/ (IRIs).
+	- $\Blank$ :: /Blanks/, anonymous vertices to represent different \emph{null values}.
+	- $\Lit$ :: /Literals/, constants such as text, dates and other data.
 
 /IRIs/ are special as they allow to retrieve information from the web by /dereferencing/
 #+LATEX: \end{definition}
 
 #+LATEX: \begin{definition}[RDF graph]
-Using the /RDF sets/ a labeled graph is built. An /RDF graph/ is a /labeled graph/
-having some additional restrictions.
+Using the /RDF sets/ a labeled graph is built. An /RDF graph/ is an
+/edge-labeled graph/ over $V \subset \IRI \cup \Blank \cup \Lit$ with some
+additional restrictions,
 
-	- Vertex are taken from all $3$ \emph{RDF sets}, $V \subset \IRI \cup \Blank \cup \Lit$.
-	- Edges cannot start at a blank node, so they are restricted from $V^2$ to $(V\setminus \Blank) \times V$.
-	- Vertices use the identity labeling, so the graph /vertex-normal/.
+	- Edges cannot start on a literal, so they are restricted from $V^2$ to $(V\setminus \Lit) \times V$.
+	# - Vertices use the identity labeling, so the graph /vertex-normal/.
 	- Edges only use /IRIs/ as labels, so $\EL = \IRI$.
 			As $\EL \subset V$, the graph is /self-labeled/.
-	- The graph is considered to be /edge-normal/.
 #+LATEX: \end{definition}
 
+# The graph is normal.
 The use of a common set of /IRIs/ for vertices and labels is encouraged as it
 allows joining information from multiple publishers.
 
