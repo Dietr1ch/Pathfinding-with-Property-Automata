@@ -345,42 +345,38 @@ RDF relies on 3 disjoint sets
 	- $\IRI$ :: /Internationalized Resource Identifiers/ (IRIs).
 	- $\Blank$ :: /Blanks/, anonymous vertices to represent different \emph{null values}.
 	- $\Lit$ :: /Literals/, constants such as text, dates and other data.
-
-/IRIs/ are special as they allow to retrieve information from the web by /dereferencing/
 #+LATEX: \end{definition}
+
+/IRIs/ are special as they allow to retrieve information from the web by
+/dereferencing/, which is the process of requesting documents on the web.
 
 #+LATEX: \begin{definition}[RDF graph]
 Using the /RDF sets/ a labeled graph is built. An /RDF graph/ is an
-/edge-labeled graph/ over $V \subset \IRI \cup \Blank \cup \Lit$ with some
+/edge-labeled graph/ over $V = \IRI \cup \Blank \cup \Lit$ with some
 additional restrictions,
 
-	- Edges cannot start on a literal, so they are restricted from $V^2$ to $(V\setminus \Lit) \times V$.
-	# - Vertices use the identity labeling, so the graph /vertex-normal/.
-	- Edges only use /IRIs/ as labels, so $\EL = \IRI$.
-			As $\EL \subset V$, the graph is /self-labeled/.
+	- Edges cannot start on a literal.
+	- Only /IRIs/ are used as labels, and their labeling is considered normal.
 #+LATEX: \end{definition}
 
-# The graph is normal.
 The use of a common set of /IRIs/ for vertices and labels is encouraged as it
-allows joining information from multiple publishers.
+allows joining information from multiple publishers, and also avoids duplication
+and possibly inconsistent information on the graph.
 
-#+LATEX: \begin{definition}[RDF triple]
-/RDF triples/ are the building blocks of information in /RDF/.
-They are triples $(s, p, o) \in (\IRI \cup \Blank) \times \IRI \times (\IRI \cup \Blank \cup \Lit)$,
-and they denote that the /predicate/ $p$ holds for the /subject/ $s$ and
-/object/ $o$ on the graph.
+On /RDF graphs/ tuple notation can be simplified as the graph has a normal labeling.
+Simplified tuples are known as /RDF triples/, which are triples
+ $(s, p, o)$ in $(V \setminus \Lit) \times \IRI \times V$.
+RDF denotes members of those triples as /subjects/, /predicates/ and /objects/.
 
-Note that RDF triples are just simplified tuple notation for an /RDF Graph/.
-#+LATEX: \end{definition}
+There is a trivial mapping between sets of /RDF triples/ and /RDF graphs/, this
+allows servers to publish triples to create an universal, distributed graph made
+of the union of all served triples.
+This graph is known as the /Semantic Web Graph/ (SWG), and can be explored
+through dereference. Every server will provide a document containing triples mentioning the
+dereferenced IRI on the document as the /subject/ or the /object/.
 
-** The Semantic Web Graph
 
-The /Semantic Web Graph/ (SWG) is the /RDF graph/ made of all /RDF triples/
-published on the Web and is denoted by $\SWG$.
 
-The SWG can be explored by /dereferencing/ IRIs.
-Dereference requests a /document/ containing relevant /RDF triples/ to a web
-server.
 When dereferencing an IRI $i$, servers return triples where $i$ is either the
 /subject/ or the /object/ of the triple, those are known as /forward triples/
 and /backward triples/ respectively.
